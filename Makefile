@@ -11,7 +11,7 @@ start:
 	python manage.py runserver
 
 lint:
-	poetry run flake8 task_manager --exclude migrations
+	poetry run flake8 game_gwent --exclude migrations
 
 shell:
 	${MANAGE} shell_plus --bpython
