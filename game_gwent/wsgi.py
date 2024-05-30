@@ -1,5 +1,4 @@
-"""
-WSGI config for game_gwent project.
+"""WSGI config for game_gwent project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

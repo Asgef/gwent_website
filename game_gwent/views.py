@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def index(request):
-    return render(request, 'index.html', context={
-        'greeting': 'Hello',
-    })
+class IndexView(TemplateView):  # noqa: D101
+    template_name = 'index.html'
+    extra_context = {
+        'title': 'Gwent',
+    }

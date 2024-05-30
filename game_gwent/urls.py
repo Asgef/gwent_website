@@ -1,5 +1,4 @@
-"""
-URL configuration for game_gwent project.
+"""URL configuration for game_gwent project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -16,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import index
+from .views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='home_page'),
+    path('', IndexView.as_view(), name='home_page'),
 ]

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    {% bootstrap_css %}
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+
+    {% include './navbar.html' %}
+
+
+    {% block content %}{% endblock %}
+
+    {% include './footer.html' %}
+
+  </body>
+</html>
