@@ -22,6 +22,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
+# Configuring the Ruff tool for source code analysis with options for line length and fixes.
 [tool.ruff]
 line-length = 80
 show-fixes = true
