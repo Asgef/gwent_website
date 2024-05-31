@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 {% load django_bootstrap5 %}
+{% load static %}
 
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
-{% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}">
+
+<html lang="ru" data-bs-theme="auto">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}{% endblock %}</title>
+    {% bootstrap_javascript %}
     {% bootstrap_css %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="...">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'game_gwent/css/product.css' %}" rel="stylesheet">
+
   </head>
-  <body class="d-flex flex-column min-vh-100">
+  <body>
 
-    {% include './navbar.html' %}
-
-
-    {% block content %}{% endblock %}
+    {% include './header.html' %}
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
 
     {% include './footer.html' %}
+
 
   </body>
 </html>
