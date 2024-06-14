@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'whitenoise.runserver_nostatic',
     'game_gwent',
+    'game_gwent.catalog'
 ]
 
 MIDDLEWARE = [
@@ -127,11 +128,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
-    },
-}
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+
+# STORAGES = {
+#     'staticfiles': {
+#         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+#     },
+# }
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 

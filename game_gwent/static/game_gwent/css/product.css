@@ -72,3 +72,10 @@
     flex: 1;
   }
 }
+
+
+.main-banner {
+    background-image: url(../img/6137.jpg);
+    background-size: cover;
+    background-position: center;
+}
