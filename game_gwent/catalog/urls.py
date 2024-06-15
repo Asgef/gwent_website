@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import index
+from .views import CatalogListView
 
 
 urlpatterns = [
-    path('', index, name='collections'),
+    path('', CatalogListView.as_view(), name='collections'),
 ]

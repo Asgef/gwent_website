@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+from django.views.generic import ListView
+from .models import Product
 
 
-def index(request):
-    return HttpResponse('Collections')
+class CatalogListView(ListView):
+    model = Product
+    template_name = 'catalog/product.html'
+
