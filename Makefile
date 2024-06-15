@@ -36,4 +36,4 @@ staticfiles:
 	${MANAGE} collectstatic --no-input
 
 load_user:
-	python manage.py loaddata --format=json $$ADMIN_USERS_JSON
+	python manage.py loaddata admin_users.json
