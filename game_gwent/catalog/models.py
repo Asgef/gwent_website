@@ -31,7 +31,7 @@ class Product(models.Model):  # noqa: D101
     age = models.PositiveIntegerField(verbose_name="Рекомендуемый возраст")
 
     image = models.ImageField(
-        upload_to='board_games/', blank=True,
+        upload_to='products/', blank=True,
         null=True, verbose_name="Изображение"
     )
 
