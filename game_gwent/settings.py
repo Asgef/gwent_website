@@ -13,7 +13,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-from django.core.files.storage import get_storage_class
 
 
 load_dotenv()
@@ -26,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#  Configuring Django application settings including secret key, debug mode, and allowed hosts.
+#  Configuring Django application settings including secret key, debug mode,
+#  and allowed hosts.
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -137,14 +137,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if DEBUG:
     # Use local file system storage in development
-    storage_class = get_storage_class(
-        'django.core.files.storage.FileSystemStorage'
-    )
+    storage_class = 'django.core.files.storage.FileSystemStorage'
 else:
     # Use Firebase storage in production
-    storage_class = get_storage_class(
-        'game_gwent.storage_backends.FirebaseStorage'
-    )
+    storage_class = 'game_gwent.storage_backends.FirebaseStorage'
 
 DEFAULT_FILE_STORAGE = storage_class
 
