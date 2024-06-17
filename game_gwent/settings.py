@@ -13,6 +13,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+from django.core.files.storage import get_storage_class
+
 
 load_dotenv()
 
@@ -45,7 +47,9 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'whitenoise.runserver_nostatic',
     'game_gwent',
-    'game_gwent.catalog'
+    'game_gwent.catalog',
+    'storages',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -128,11 +132,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-#
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+if DEBUG:
+    # Use local file system storage in development
+    storage_class = get_storage_class(
+        'django.core.files.storage.FileSystemStorage'
+    )
+else:
+    # Use Firebase storage in production
+    storage_class = get_storage_class(
+        'game_gwent.storage_backends.FirebaseStorage'
+    )
+
+DEFAULT_FILE_STORAGE = storage_class
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # STORAGES = {
 #     'staticfiles': {

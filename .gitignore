@@ -14,3 +14,4 @@ coverage.xml
 db.sqlite3
 /staticfiles/
 /media/
+gwent-adminsdk.json

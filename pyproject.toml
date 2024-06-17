@@ -16,11 +16,15 @@ gunicorn = "^22.0.0"
 rollbar = "^1.0.0"
 psycopg2-binary = "^2.9.9"
 pillow = "^10.3.0"
+firebase-admin = "^6.5.0"
+django-storages = "^1.14.3"
+django-extensions = "^3.2.3"
 
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
 ruff = "^0.4.6"
+bpython = "^0.24"
 
 [build-system]
 requires = ["poetry-core"]
