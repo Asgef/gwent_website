@@ -5,14 +5,24 @@ import mimetypes
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+import json
 
 load_dotenv()
 
-cred = credentials.Certificate(os.getenv('ADMIN_SDK'))
+admin_sdk_path = os.getenv('ADMIN_SDK')
 
-initialize_app(cred, {
-    'storageBucket': os.getenv('URL_SDK_STORAGE')
-})
+if admin_sdk_path:
+    if admin_sdk_path.startswith('{'):
+        cred_dict = json.loads(admin_sdk_path)
+        cred = credentials.Certificate(cred_dict)
+    else:
+        cred = credentials.Certificate(admin_sdk_path)
+
+    initialize_app(cred, {
+        'storageBucket': os.getenv('URL_SDK_STORAGE')
+    })
+else:
+    raise ValueError('ADMIN_SDK environment variable is not set or empty.')
 
 bucket = storage.bucket()
 
