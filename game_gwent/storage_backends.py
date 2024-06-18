@@ -9,20 +9,11 @@ import json
 
 load_dotenv()
 
-admin_sdk_path = os.getenv('ADMIN_SDK')
+cred = credentials.Certificate(os.getenv('ADMIN_SDK'))
 
-if admin_sdk_path:
-    if admin_sdk_path.startswith('{'):
-        cred_dict = json.loads(admin_sdk_path)
-        cred = credentials.Certificate(cred_dict)
-    else:
-        cred = credentials.Certificate(admin_sdk_path)
-
-    initialize_app(cred, {
-        'storageBucket': os.getenv('URL_SDK_STORAGE')
-    })
-else:
-    raise ValueError('ADMIN_SDK environment variable is not set or empty.')
+initialize_app(cred, {
+    'storageBucket': os.getenv('URL_SDK_STORAGE')
+})
 
 bucket = storage.bucket()
 
