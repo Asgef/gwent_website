@@ -8,7 +8,7 @@ start-production:
 	poetry run gunicorn -w 5 -b 0.0.0.0:8000 game_gwent.wsgi
 
 start:
-	python manage.py runserver 0.0.0.0:8000
+	${MANAGE} runserver 0.0.0.0:8000
 
 lint:
 	poetry run flake8 game_gwent --exclude migrations
