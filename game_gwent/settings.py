@@ -32,6 +32,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False) == 'True'
 
+PRODUCTION = os.getenv('PRODUCTION')
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -135,7 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if DEBUG:
+if not PRODUCTION:
     # Use local file system storage in development
     storage_class = 'django.core.files.storage.FileSystemStorage'
 else:
