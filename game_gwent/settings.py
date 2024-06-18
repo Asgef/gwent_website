@@ -137,12 +137,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if not PRODUCTION:
-    # Use local file system storage in development
-    storage_class = 'django.core.files.storage.FileSystemStorage'
-else:
-    # Use Firebase storage in production
+if PRODUCTION:
     storage_class = 'game_gwent.storage_backends.FirebaseStorage'
+else:
+    storage_class = 'django.core.files.storage.FileSystemStorage'
+
 
 DEFAULT_FILE_STORAGE = storage_class
 
