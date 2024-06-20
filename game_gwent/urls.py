@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeListView.as_view(), name='home_page'),
     path('collections/', include('game_gwent.catalog.urls')),
+    path('cart/', include('game_gwent.cart.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

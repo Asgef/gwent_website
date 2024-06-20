@@ -48,10 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'whitenoise.runserver_nostatic',
-    'game_gwent',
-    'game_gwent.catalog',
     'storages',
     'django_extensions',
+    'game_gwent',
+    'game_gwent.catalog',
+    'game_gwent.cart',
 ]
 
 MIDDLEWARE = [
