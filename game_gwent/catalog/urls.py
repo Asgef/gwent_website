@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import CatalogListView
+from .views import CatalogDetailView
 
 
 urlpatterns = [
-    path('', CatalogListView.as_view(), name='collections'),
+    path(
+        '<int:pk>/', CatalogDetailView.as_view(),
+        name='collections_detail'
+    ),
 ]

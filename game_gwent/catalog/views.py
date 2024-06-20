@@ -1,7 +1,12 @@
-from django.views.generic import ListView
+from django.views.generic import DetailView
 from .models import Product
 
 
-class CatalogListView(ListView):
+class CatalogDetailView(DetailView):
     model = Product
     template_name = 'catalog/product.html'
+    extra_context = {
+        'title': 'Product',
+        'button_text': 'Show'
+    }
+# TODO: определить содержимое extra_context

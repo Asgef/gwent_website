@@ -1,26 +1,35 @@
 {% extends "layouts/base.html" %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ product.title }}{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for product in object_list %}
-    <div class="col">
-      <div class="card h-100">
-        {% if product.image %}
-        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
-        {% else %}
-        <div class="bg-dark mx-auto" style="width: 100%; height: 200px;"></div>
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ product.title }}</h5>
-          <p class="card-text">{{ product.description }}</p>
-          <p class="card-text"><small class="text-muted">Цена: {{ product.price }}</small></p>
-        </div>
-      </div>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+      {% else %}
+      <div class="bg-dark mx-auto" style="width: 100%; height: 400px;"></div>
+      {% endif %}
     </div>
-    {% endfor %}
+    <div class="col-md-6">
+      <h1>{{ product.title }}</h1>
+      <p class="text-muted">Цена: {{ product.price }} ₽</p>
+      <p>{{ product.description }}</p>
+      <p class="text-muted">На складе: {{ product.stock }}</p>
+      <p class="text-muted">Жанр: {{ product.get_genre_display }}</p>
+      <p class="text-muted">Издатель: {{ product.publisher }}</p>
+      <p class="text-muted">Рекомендуемый возраст: {{ product.age }}+</p>
+
+      <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="quantity" class="form-label">Количество</label>
+          <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control w-auto">
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}
