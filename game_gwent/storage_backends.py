@@ -5,7 +5,6 @@ import mimetypes
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
-import json
 
 load_dotenv()
 

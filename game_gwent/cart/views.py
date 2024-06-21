@@ -65,7 +65,3 @@ def update_cart(request, pk):
 
     request.session['cart'] = cart
     return redirect(reverse('cart_detail'))
-
-
-
-
