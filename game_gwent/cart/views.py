@@ -17,7 +17,10 @@ def cart_detail(request):
             'quantity': quantity,
             'total_price': product.price * quantity
         })
-
+    # for item in cart_items:
+    #     print(
+    #     f"Product ID: {item['product'].id}, Quantity: {item['quantity']}"
+    #     )
     return render(
         request, 'cart/cart.html', {
             'cart_items': cart_items, 'total': total
@@ -25,30 +28,44 @@ def cart_detail(request):
     )
 
 
-def add_to_cart(request, product_id):
+def add_to_cart(request, pk):
     cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        cart[str(product_id)] += 1
+    quantity = int(request.POST.get('quantity', 1))
+    if str(pk) in cart:
+        cart[str(pk)] += quantity
     else:
-        cart[str(product_id)] = 1
+        cart[str(pk)] = quantity
+    request.session['cart'] = cart
+    return redirect(reverse('cart_detail'))
+
+
+def remove_from_cart(request, pk):
+    cart = request.session.get('cart', {})
+    if str(pk) in cart:
+        del cart[str(pk)]
+        request.session['cart'] = cart
+
+    return redirect(reverse('cart_detail'))
+
+
+def update_cart(request, pk):
+
+    print("POST data:", request.POST)
+    cart = request.session.get('cart', {})
+    action = request.POST.get('action')
+
+    product = Product.objects.get(id=pk)
+    min_quantity = 1
+    max_quantity = product.stock
+
+    if action == 'increase' and cart[str(pk)] < max_quantity:
+        cart[str(pk)] += 1
+    elif action == 'decrease' and cart[str(pk)] > min_quantity:
+        cart[str(pk)] -= 1
 
     request.session['cart'] = cart
     return redirect(reverse('cart_detail'))
 
 
-def remove_from_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        del cart[str(product_id)]
-        request.session['cart'] = cart
-
-    return redirect(reverse('cart_detail'))
 
 
-def update_cart(request, product_id, quantity):
-    cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        cart[str(product_id)] = quantity
-        request.session['cart'] = cart
-
-    return redirect(reverse('cart_detail'))

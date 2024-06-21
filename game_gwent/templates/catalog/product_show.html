@@ -29,6 +29,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Добавить в корзину</button>
       </form>
+      <form action="'buy_now' product.id %}" method="POST" class="mt-4">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" id="quantity" value="{{ quantity }}">
+        <button type="submit" class="btn btn-success ml-2">Купить</button>
+      </form>
     </div>
   </div>
 </div>
