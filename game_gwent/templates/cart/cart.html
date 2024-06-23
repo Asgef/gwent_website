@@ -9,15 +9,14 @@
 
 <cart-items class="page-width section-template--17791550292279__cart-items-padding">
   <div class="title-wrapper-with-link">
-    <h1 class="title title--primary">Your cart</h1>
-    <a href="#" class="underlined-link">Continue shopping</a>
+    <h1 class="title title--primary">Корзина</h1>
   </div>
 
   {% if not cart_items %}
     <div class="cart__warnings">
-      <h1 class="cart__empty-text">Your cart is empty</h1>
+      <h1 class="cart__empty-text">Ваша корзина пуста</h1>
       <a href="#" class="button">
-        Continue shopping
+        Продолжить покупки
       </a>
     </div>
   {% else %}
@@ -28,8 +27,8 @@
             <caption class="visually-hidden">Your cart</caption>
             <thead>
               <tr>
-                <th class="caption-with-letter-spacing" colspan="2" scope="col">Product</th>
-                <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">Total</th>
+                <th class="caption-with-letter-spacing" colspan="2" scope="col">Продукт</th>
+                <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
               </tr>
             </thead>
             <tbody>
@@ -63,9 +62,10 @@
                         <i class="bi bi-plus"></i>
                       </button>
                     </form>
-                    <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger" aria-label="Remove {{ item.product.name }}">
-                      <i class="bi bi-trash"></i>
-                    </a>
+                    <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Удалить</button>
+                    </form>
                   </div>
                 </td>
                 </td>
