@@ -17,10 +17,6 @@ def cart_detail(request):
             'quantity': quantity,
             'total_price': product.price * quantity
         })
-    # for item in cart_items:
-    #     print(
-    #     f"Product ID: {item['product'].id}, Quantity: {item['quantity']}"
-    #     )
     return render(
         request, 'cart/cart.html', {
             'cart_items': cart_items, 'total': total

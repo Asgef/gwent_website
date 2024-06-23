@@ -1,12 +1,10 @@
 from django.views.generic import DetailView
 from .models import Product
+from game_gwent.mixins import ExtraContextMixin
 
 
-class CatalogDetailView(DetailView):
+class CatalogDetailView(ExtraContextMixin, DetailView):
     model = Product
     template_name = 'catalog/product_show.html'
-    extra_context = {
-        'title': 'Product',
-        'button_text': 'Show'
-    }
+
 # TODO: определить содержимое extra_context
