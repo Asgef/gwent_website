@@ -2,9 +2,6 @@
 
 <nav class="navbar navbar-expand-md bg-light sticky-top border-bottom" data-bs-theme="light">
   <div class="container">
-    <a class="navbar-brand d-md-none" href="#">
-      <img src="{% static 'game_gwent/svg/logo.svg' %}" width="24" height="24" alt="Aperture">
-    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,10 +11,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <ul class="navbar-nav flex-grow-1 justify-content-between">
+        <ul class="navbar-nav flex-grow-1 justify-content-between align-items-center">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home_page' %}">
-              <img src="{% static 'game_gwent/img/Monochrome_logo.png' %}" width="48" height="48" alt="Aperture">
+              <img src="{% static 'game_gwent/icons/tisha_logo.svg' %}" width="84" height="84" alt="Aperture">
             </a>
           </li>
           <li class="nav-item"><a class="nav-link" href="{% url 'home_page' %}">Главная</a></li>
