@@ -1,38 +1,40 @@
-<footer class="container py-5">
-  <div class="row">
-    <div class="col-6 col-md">
-      <h5>Ссылки</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary text-decoration-none" href="{% url 'home_page' %}">Главная</a></li>
-        <li><a class="link-secondary text-decoration-none" href=" 'about' %}">О нас</a></li>
-        <li><a class="link-secondary text-decoration-none" href="{% url 'cart_detail' %}">Корзина</a></li>
-      </ul>
+<footer class="py-4 border-top mt-5 mb-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-6 col-md">
+        <h5>Ссылки</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="link-secondary text-decoration-none" href="{% url 'home_page' %}">Главная</a></li>
+          <li><a class="link-secondary text-decoration-none" href=" 'about' %}">О нас</a></li>
+          <li><a class="link-secondary text-decoration-none" href="{% url 'cart_detail' %}">Корзина</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>Наши контакты</h5>
+        <ul class="list-unstyled text-small">
+          <li><p>WooGames</p></li>
+          <li><p>{{ email }}</p></li>
+          <li><p>{{ phn_number }}</p></li>
+        </ul>
+      </div>
+  <!--    <div class="col-6 col-md">-->
+  <!--      <h5>Resources</h5>-->
+  <!--      <ul class="list-unstyled text-small">-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>-->
+  <!--      </ul>-->
+  <!--    </div>-->
+  <!--    <div class="col-6 col-md">-->
+  <!--      <h5>About</h5>-->
+  <!--      <ul class="list-unstyled text-small">-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>-->
+  <!--        <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>-->
+  <!--      </ul>-->
+  <!--    </div>-->
     </div>
-    <div class="col-6 col-md">
-      <h5>Наши контакты</h5>
-      <ul class="list-unstyled text-small">
-        <li><p>WooGames</p></li>
-        <li><p>{{ email }}</p></li>
-        <li><p>{{ phn_number }}</p></li>
-      </ul>
-    </div>
-<!--    <div class="col-6 col-md">-->
-<!--      <h5>Resources</h5>-->
-<!--      <ul class="list-unstyled text-small">-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--    <div class="col-6 col-md">-->
-<!--      <h5>About</h5>-->
-<!--      <ul class="list-unstyled text-small">-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>-->
-<!--        <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>-->
-<!--      </ul>-->
-<!--    </div>-->
   </div>
 </footer>
