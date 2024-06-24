@@ -15,7 +15,7 @@
   {% if not cart_items %}
     <div class="cart__warnings">
       <h1 class="cart__empty-text">Ваша корзина пуста</h1>
-      <a href="#" class="button">
+      <a href="{% url 'home_page' %}" class="button">
         Продолжить покупки
       </a>
     </div>

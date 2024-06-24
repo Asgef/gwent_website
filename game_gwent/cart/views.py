@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from game_gwent.catalog.models import Product
 from django.views.generic import ListView
-from game_gwent.mixins import ExtraContextMixin
+from game_gwent.mixins import ExtraContextMixin, CartStatusMixin
 from django.views import View
 
 
-class CartListView(ExtraContextMixin, ListView):
+class CartListView(ExtraContextMixin, CartStatusMixin, ListView):
     model = Product
     template_name = 'cart/cart.html'
     context_object_name = 'cart_items'

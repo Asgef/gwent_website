@@ -1,9 +1,9 @@
 from django.views.generic import ListView, TemplateView
 from game_gwent.catalog.models import Product
-from .mixins import ExtraContextMixin
+from .mixins import ExtraContextMixin, CartStatusMixin
 
 
-class HomeListView(ExtraContextMixin, ListView):
+class HomeListView(ExtraContextMixin, CartStatusMixin, ListView):
     model = Product
     template_name = 'home_page.html'
 
@@ -16,7 +16,7 @@ class HomeListView(ExtraContextMixin, ListView):
     }
 
 
-class AboutPageView(ExtraContextMixin, TemplateView):
+class AboutPageView(ExtraContextMixin, CartStatusMixin, TemplateView):
     template_name = 'about.html'
     extra_context = {
         'title': 'О нас'
