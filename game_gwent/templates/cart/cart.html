@@ -4,91 +4,93 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+  <div class="py-3 px-5">
+    <link href="{% static 'game_gwent/cart/css/cart.css' %}" rel="stylesheet">
 
-<link href="{% static 'game_gwent/cart/css/cart.css' %}" rel="stylesheet">
+    <cart-items class="page-width section-template--17791550292279__cart-items-padding">
+      <div class="title-wrapper-with-link">
+        <h1 class="title title--primary">Корзина</h1>
+      </div>
 
-<cart-items class="page-width section-template--17791550292279__cart-items-padding">
-  <div class="title-wrapper-with-link">
-    <h1 class="title title--primary">Корзина</h1>
+      {% if not cart_items %}
+        <div class="cart__warnings">
+          <h1 class="cart__empty-text">Ваша корзина пуста</h1>
+          <a href="{% url 'home_page' %}" class="button">
+            Продолжить покупки
+          </a>
+        </div>
+      {% else %}
+        <div class="cart__contents critical-hidden" id="cart">
+          <div class="cart__items" id="main-cart-items" data-id="template--17791550292279__cart-items">
+            <div class="js-contents">
+              <table class="cart-items">
+                <caption class="visually-hidden">Your cart</caption>
+                <thead>
+                  <tr>
+                    <th class="caption-with-letter-spacing" colspan="2" scope="col">Продукт</th>
+                    <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart_items %}
+                  <tr class="cart-item" id="CartItem-{{ forloop.counter }}">
+                    <td class="cart-item__media">
+                      <a href="{{ item.product.get_absolute_url }}" class="cart-item__link" aria-hidden="true" tabindex="-1">
+                        <img src="{{ item.product.image.url }}" class="cart-item__image" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
+                      </a>
+                    </td>
+                    <td class="cart-item__details">
+                      <a href="{{ item.product.get_absolute_url }}" class="cart-item__name h4 break">{{ item.product.name }}</a>
+                      <div class="product-option">{{ item.product.title }} {{ item.product.price }}</div>
+                    </td>
+                    <td class="cart-item__quantity">
+                      <div class="cart-item__quantity-wrapper">
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="decrease">
+                          <button class="btn btn-outline-secondary" type="submit">
+                            <span class="visually-hidden">Decrease quantity for {{ item.product.name }}</span>
+                            <i class="bi bi-dash"></i>
+                          </button>
+                        </form>
+                        <input class="form-control quantity__input" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly>
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="increase">
+                          <button class="btn btn-outline-secondary" type="submit">
+                            <span class="visually-hidden">Increase quantity for {{ item.product.name }}</span>
+                            <i class="bi bi-plus"></i>
+                          </button>
+                        </form>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                        </form>
+                      </div>
+                    </td>
+                    </td>
+                    <td class="cart-item__totals right">
+                      <div class="cart-item__price-wrapper"><span class="price price--end">{{ item.total_price }}</span></div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
+          <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">Loading...</p>
+          <div class="cart__totals">
+            <div class="cart__subtotal">
+              <span class="subtotal__label">Сумма</span>
+              <span class="subtotal__price">{{ total }}</span>
+            </div>
+            <p class="taxes-and-shipping">Налоги и доставка рассчитываются при оформлении заказа</p>
+            <a href="'checkout' %}" class="btn btn-primary checkout-btn">Купить</a>
+          </div>
+        </div>
+      {% endif %}
+    </cart-items>
   </div>
 
-  {% if not cart_items %}
-    <div class="cart__warnings">
-      <h1 class="cart__empty-text">Ваша корзина пуста</h1>
-      <a href="{% url 'home_page' %}" class="button">
-        Продолжить покупки
-      </a>
-    </div>
-  {% else %}
-    <div class="cart__contents critical-hidden" id="cart">
-      <div class="cart__items" id="main-cart-items" data-id="template--17791550292279__cart-items">
-        <div class="js-contents">
-          <table class="cart-items">
-            <caption class="visually-hidden">Your cart</caption>
-            <thead>
-              <tr>
-                <th class="caption-with-letter-spacing" colspan="2" scope="col">Продукт</th>
-                <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in cart_items %}
-              <tr class="cart-item" id="CartItem-{{ forloop.counter }}">
-                <td class="cart-item__media">
-                  <a href="{{ item.product.get_absolute_url }}" class="cart-item__link" aria-hidden="true" tabindex="-1">
-                    <img src="{{ item.product.image.url }}" class="cart-item__image" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
-                  </a>
-                </td>
-                <td class="cart-item__details">
-                  <a href="{{ item.product.get_absolute_url }}" class="cart-item__name h4 break">{{ item.product.name }}</a>
-                  <div class="product-option">{{ item.product.price }}</div>
-                </td>
-                <td class="cart-item__quantity">
-                  <div class="cart-item__quantity-wrapper">
-                    <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
-                      {% csrf_token %}
-                      <input type="hidden" name="action" value="decrease">
-                      <button class="btn btn-outline-secondary" type="submit">
-                        <span class="visually-hidden">Decrease quantity for {{ item.product.name }}</span>
-                        <i class="bi bi-dash"></i>
-                      </button>
-                    </form>
-                    <input class="form-control quantity__input" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly>
-                    <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
-                      {% csrf_token %}
-                      <input type="hidden" name="action" value="increase">
-                      <button class="btn btn-outline-secondary" type="submit">
-                        <span class="visually-hidden">Increase quantity for {{ item.product.name }}</span>
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </form>
-                    <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Удалить</button>
-                    </form>
-                  </div>
-                </td>
-                </td>
-                <td class="cart-item__totals right">
-                  <div class="cart-item__price-wrapper"><span class="price price--end">{{ item.total_price }}</span></div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
-      <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">Loading...</p>
-      <div class="cart__totals">
-        <div class="cart__subtotal">
-          <span class="subtotal__label">Сумма</span>
-          <span class="subtotal__price">{{ total }}</span>
-        </div>
-        <p class="taxes-and-shipping">Налоги и доставка рассчитываются при оформлении заказа</p>
-        <a href="'checkout' %}" class="btn btn-primary checkout-btn">Купить</a>
-      </div>
-    </div>
-  {% endif %}
-</cart-items>
 {% endblock %}

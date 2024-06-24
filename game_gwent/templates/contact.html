@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+
+    <div class="cart__warnings py-4">
+      <h1 class="cart__empty-text">С нами можно связаться</h1>
+      <a href="{% url 'home_page' %}" class="button">
+        Об этом потом
+      </a>
+    </div>
+
+{% endblock %}

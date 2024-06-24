@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from .views import HomeListView, AboutPageView
+from .views import HomeListView, AboutPageView, ContactPageView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', HomeListView.as_view(), name='home_page'),
     path('about/', AboutPageView.as_view(), name='about_page'),
+    path('contact/', ContactPageView.as_view(), name='contact'),
     path('collections/', include('game_gwent.catalog.urls')),
     path('cart/', include('game_gwent.cart.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

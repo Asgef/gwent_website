@@ -4,21 +4,21 @@
 
 {% block content %}
 
-    <main>
-        <div class="main-banner position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
-            <div class="col-md-6 p-lg-5 mx-auto my-5">
-              <h1 class="display-3 fw-bold">{{ greeting_title }}</h1>
-              <h3 class="fw-normal text-muted mb-3">{{ greeting_description }}</h3>
-              <div class="d-flex gap-3 justify-content-center lead fw-normal">
-                <a class="icon-link" href="{% url 'cart_detail' %}">
-                  Купить
-                  <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-                </a>
-              </div>
-            </div>
+
+    <div class="main-banner position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+        <div class="col-md-6 p-lg-5 mx-auto my-5">
+          <h1 class="display-3 fw-bold">{{ greeting_title }}</h1>
+          <h3 class="fw-normal text-muted mb-3">{{ greeting_description }}</h3>
+          <div class="d-flex gap-3 justify-content-center lead fw-normal">
+            <a class="icon-link" href="{% url 'cart_detail' %}">
+              Купить
+              <svg class="bi"><use xlink:href="#chevron-right"/></svg>
+            </a>
+          </div>
         </div>
+    </div>
 
-        {% include 'layouts/product.html' %}
+    {% include 'layouts/product.html' %}
 
-    </main>
+
 {% endblock %}

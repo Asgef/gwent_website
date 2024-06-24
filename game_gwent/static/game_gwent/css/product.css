@@ -84,8 +84,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;
 }
 
 footer {
-  margin-top: auto;
+  margin-top: auto; /* Автоматическое выравнивание футера внизу страницы */
+  padding: 20px 0; /* Добавляем отступы */
+  border-top: 1px solid #ddd;
 }

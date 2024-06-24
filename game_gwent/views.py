@@ -21,3 +21,10 @@ class AboutPageView(ExtraContextMixin, CartStatusMixin, TemplateView):
     extra_context = {
         'title': 'О нас'
     }
+
+
+class ContactPageView(ExtraContextMixin, CartStatusMixin, TemplateView):
+    template_name = 'contact.html'
+    extra_context = {
+        'title': 'Связь с нами'
+    }
