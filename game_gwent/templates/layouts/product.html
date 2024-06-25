@@ -1,7 +1,7 @@
 <!-- templates/layouts/product_show.html -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center align-items-center">
   {% for product in object_list %}
-  <div class="col">
+  <div>
     <a href="{% url 'collections_detail' product.id %}" class="text-decoration-none text-dark">
       <div class="card h-100">
         {% if product.image %}
