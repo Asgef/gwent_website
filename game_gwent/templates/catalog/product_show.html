@@ -3,20 +3,34 @@
 {% block title %}{{ product.title }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-6">
-      {% if product.image %}
-      <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+<div class="container-fluid mt-5">
+  <div class="row px-5 pt-5 pb-3 mx-2">
+    <!-- Область для картинок занимает 8 колонок -->
+    <div class="col-md-8 px-0">
+      {% if product.main_image %}
+      <!-- Основная обложка продукта -->
+      <div class="container">
+        <img src="{{ product.main_image.url }}" class="img-fluid mb-3" alt="{{ product.title }}">
+
+        <!-- Галерея изображений -->
+        <div class="row">
+          {% for image in images %}
+          <div class="col-6 mb-3">
+            <img src="{{ image.image.url }}" class="img-fluid" alt="{{ product.title }}">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
       {% else %}
       <div class="bg-dark mx-auto" style="width: 100%; height: 400px;"></div>
       {% endif %}
     </div>
-    <div class="col-md-6">
+
+    <!-- Область для текста занимает 4 колонки -->
+    <div class="col-md-4">
       <h1>{{ product.title }}</h1>
       <p class="text-muted">Цена: {{ product.price }} ₽</p>
       <p>{{ product.description }}</p>
-      <p class="text-muted">На складе: {{ product.stock }}</p>
       <p class="text-muted">Жанр: {{ product.get_genre_display }}</p>
       <p class="text-muted">Издатель: {{ product.publisher }}</p>
       <p class="text-muted">Рекомендуемый возраст: {{ product.age }}+</p>
@@ -29,9 +43,9 @@
         </div>
         <button type="submit" class="btn btn-primary">Добавить в корзину</button>
       </form>
-      <form action="'buy_now' product.id %}" method="POST" class="mt-4">
+      <form action="#" method="POST" class="mt-4">
         {% csrf_token %}
-        <input type="hidden" name="quantity" id="quantity" value="{{ quantity }}">
+        <input type="hidden" name="quantity" id="quantity" value="1">
         <button type="submit" class="btn btn-success ml-2">Купить</button>
       </form>
     </div>

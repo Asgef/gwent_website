@@ -5,14 +5,13 @@
     <div>
       <a href="{% url 'collections_detail' product.id %}" class="text-decoration-none text-dark">
         <div class="card h-100">
-          {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
+          {% if product.main_image %}
+          <img src="{{ product.main_image.url }}" class="card-img-top" alt="{{ product.title }}">
           {% else %}
           <div class="bg-dark mx-auto" style="width: 100%; height: 200px;"></div>
           {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text">{{ product.description }}</p>
             <p class="card-text"><small class="text-muted">Цена: {{ product.price }}</small></p>
           </div>
         </div>

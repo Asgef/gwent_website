@@ -30,9 +30,9 @@ class Product(models.Model):  # noqa: D101
     publisher = models.CharField(max_length=255, verbose_name="Издатель")
     age = models.PositiveIntegerField(verbose_name="Рекомендуемый возраст")
 
-    image = models.ImageField(
+    main_image = models.ImageField(
         upload_to='media/game_gwent/catalog/img/', blank=True,
-        null=True, verbose_name="Изображение"
+        null=True, verbose_name="Обложка"
     )
 
     def __str__(self):  # noqa: D105
@@ -42,3 +42,15 @@ class Product(models.Model):  # noqa: D101
         verbose_name = "Настольная игра"
         verbose_name_plural = 'Настольные игры'
         ordering = ['title']
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='media/game_gwent/catalog/img/', blank=True,
+        null=True, verbose_name="Изображения"
+    )
+
+    class Meta:  # noqa: D106
+        verbose_name = "Галерея"
+        verbose_name_plural = 'Галереи'
