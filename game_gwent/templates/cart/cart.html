@@ -36,7 +36,7 @@
                   <tr class="cart-item" id="CartItem-{{ forloop.counter }}">
                     <td class="cart-item__media">
                       <a href="{{ item.product.get_absolute_url }}" class="cart-item__link" aria-hidden="true" tabindex="-1">
-                        <img src="{{ item.product.image.url }}" class="cart-item__image" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
+                        <img src="{{ item.product.main_image.url }}" class="cart-item__image" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
                       </a>
                     </td>
                     <td class="cart-item__details">

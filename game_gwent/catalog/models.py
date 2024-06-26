@@ -45,7 +45,9 @@ class Product(models.Model):  # noqa: D101
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, related_name='images', on_delete=models.CASCADE
+    )
     image = models.ImageField(
         upload_to='media/game_gwent/catalog/img/', blank=True,
         null=True, verbose_name="Изображения"
