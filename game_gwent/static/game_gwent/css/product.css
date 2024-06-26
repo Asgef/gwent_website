@@ -97,4 +97,35 @@ footer {
   border-top: 1px solid #ddd;
 }
 
+.card {
+  overflow: hidden;
+  position: relative;
+}
 
+.card .main-image,
+.card .gallery-image {
+  width: 100%;
+  height: auto; /* make sure images maintain their aspect ratio */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card .gallery-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.card:hover .gallery-image {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.card:hover .main-image {
+  opacity: 0;
+}
+
+.card-body {
+  position: relative;
+  z-index: 2; /* Ensure the card body is above the gallery image */
+}
