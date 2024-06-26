@@ -52,5 +52,5 @@ class ProductImage(models.Model):
     )
 
     class Meta:  # noqa: D106
-        verbose_name = "Галерея"
+        verbose_name = "Галереи для игры"
         verbose_name_plural = 'Галереи'

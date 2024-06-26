@@ -5,29 +5,51 @@
 {% block content %}
 <div class="container-fluid mt-5">
   <div class="row px-5 pt-5 pb-3 mx-2">
-    <!-- Область для картинок занимает 8 колонок -->
-    <div class="col-md-8 px-0">
+    <!-- Область для картинок -->
+    <div class="col-lg-8 col-md-6 px-0">
       {% if product.main_image %}
       <!-- Основная обложка продукта -->
-      <div class="container">
+      <div class="container d-none d-md-block">
         <img src="{{ product.main_image.url }}" class="img-fluid mb-3" alt="{{ product.title }}">
 
-        <!-- Галерея изображений -->
+        <!-- Галерея изображений для экранов больше 767px -->
         <div class="row">
           {% for image in images %}
-          <div class="col-6 mb-3">
+          <div class="col-lg-6 col-md-12 mb-3">
             <img src="{{ image.image.url }}" class="img-fluid" alt="{{ product.title }}">
           </div>
           {% endfor %}
         </div>
+      </div>
+
+      <!-- Карусель для экранов меньше 767px -->
+      <div id="imageCarousel" class="carousel slide d-md-none" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{{ product.main_image.url }}" class="d-block w-100" alt="{{ product.title }}">
+          </div>
+          {% for image in images %}
+          <div class="carousel-item">
+            <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ product.title }}">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
       {% else %}
       <div class="bg-dark mx-auto" style="width: 100%; height: 400px;"></div>
       {% endif %}
     </div>
 
-    <!-- Область для текста занимает 4 колонки -->
-    <div class="col-md-4">
+    <!-- Область для текста -->
+    <div class="col-lg-4 col-md-6">
       <h1>{{ product.title }}</h1>
       <p class="text-muted">Цена: {{ product.price }} ₽</p>
       <p>{{ product.description }}</p>
