@@ -15,20 +15,22 @@
       {% if not cart_items %}
         <div class="cart__warnings">
           <h1 class="cart__empty-text">Ваша корзина пуста</h1>
-          <a href="{% url 'home_page' %}" class="button">
+          <a href="{% url 'home_page' %}" class="btn btn-primary">
             Продолжить покупки
           </a>
         </div>
       {% else %}
-        <div class="cart__contents critical-hidden" id="cart">
+        <div class="cart__contents critical-hidden">
           <div class="cart__items" id="main-cart-items" data-id="template--17791550292279__cart-items">
             <div class="js-contents">
-              <table class="cart-items">
+              <table class="table table-bordered table-hover">
                 <caption class="visually-hidden">Your cart</caption>
                 <thead>
                   <tr>
                     <th class="caption-with-letter-spacing" colspan="2" scope="col">Продукт</th>
-                    <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
+                    <th class="caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
+                    <th class="caption-with-letter-spacing small-hide" colspan="1" scope="col">Количество</th>
+                    <th class="caption-with-letter-spacing small-hide" colspan="1" scope="col">Всего</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,16 +38,29 @@
                   <tr class="cart-item" id="CartItem-{{ forloop.counter }}">
                     <td class="cart-item__media">
                       <a href="{{ item.product.get_absolute_url }}" class="cart-item__link" aria-hidden="true" tabindex="-1">
-                        <img src="{{ item.product.main_image.url }}" class="cart-item__image" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
+                        <img src="{{ item.product.main_image.url }}" class="img-fluid" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
                       </a>
                     </td>
                     <td class="cart-item__details">
-                      <a href="{{ item.product.get_absolute_url }}" class="cart-item__name h4 break">{{ item.product.name }}</a>
+                      <a href="{{ item.product.get_absolute_url }}" class="h4">{{ item.product.name }}</a>
                       <div class="product-option">{{ item.product.title }} {{ item.product.price }}</div>
                     </td>
-                    <td class="cart-item__quantity">
-                      <div class="cart-item__quantity-wrapper">
-                        <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
+                    <td class="cart-item__totals right medium-hide large-up-hide">
+                      <div class="loading-overlay hidden">
+                        <div class="loading-overlay__spinner">
+                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="cart-item__price-wrapper">
+                        <span class="price price--end">{{ item.total_price }}</span>
+                      </div>
+                    </td>
+                    <td class="cart-item__quantity small-hide">
+                      <div class="cart-item__quantity-wrapper d-flex align-items-center">
+
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
                           {% csrf_token %}
                           <input type="hidden" name="action" value="decrease">
                           <button class="btn btn-outline-secondary" type="submit">
@@ -53,8 +68,9 @@
                             <i class="bi bi-dash"></i>
                           </button>
                         </form>
-                        <input class="form-control quantity__input" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly>
-                        <form action="{% url 'update_cart' item.product.id %}" method="post" style="display: inline;">
+
+                        <input class="form-control quantity__input mx-2" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly>
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
                           {% csrf_token %}
                           <input type="hidden" name="action" value="increase">
                           <button class="btn btn-outline-secondary" type="submit">
@@ -62,15 +78,26 @@
                             <i class="bi bi-plus"></i>
                           </button>
                         </form>
-                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Удалить</button>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}" class="d-inline-block ml-2">
+                          {% csrf_token %}
+                          <button class="btn btn-outline-danger" type="submit">
+                            <span class="visually-hidden">Remove {{ item.product.name }}</span>
+                            <i class="bi bi-trash"></i>
+                          </button>
                         </form>
                       </div>
                     </td>
-                    </td>
-                    <td class="cart-item__totals right">
-                      <div class="cart-item__price-wrapper"><span class="price price--end">{{ item.total_price }}</span></div>
+                    <td class="cart-item__totals right small-hide">
+                      <div class="loading-overlay hidden">
+                        <div class="loading-overlay__spinner">
+                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="cart-item__price-wrapper">
+                        <span class="price price--end">{{ item.total_price }}</span>
+                      </div>
                     </td>
                   </tr>
                   {% endfor %}
@@ -86,11 +113,10 @@
               <span class="subtotal__price">{{ total }}</span>
             </div>
             <p class="taxes-and-shipping">Налоги и доставка рассчитываются при оформлении заказа</p>
-            <a href="'checkout' %}" class="btn btn-primary checkout-btn">Купить</a>
+            <a href="#" class="btn btn-primary checkout-btn">Купить</a>
           </div>
         </div>
       {% endif %}
     </cart-items>
   </div>
-
 {% endblock %}
