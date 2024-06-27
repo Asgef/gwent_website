@@ -147,3 +147,7 @@ footer {
   background: rgba(255, 255, 255, 0.8);
 }
 
+.product-link {
+  text-decoration: none;
+  color: black;
+}

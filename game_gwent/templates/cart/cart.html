@@ -6,6 +6,7 @@
 {% block content %}
   <div class="py-3 px-5">
     <link href="{% static 'game_gwent/cart/css/cart.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <cart-items class="page-width section-template--17791550292279__cart-items-padding">
       <div class="title-wrapper-with-link">
@@ -23,80 +24,57 @@
         <div class="cart__contents critical-hidden">
           <div class="cart__items" id="main-cart-items" data-id="template--17791550292279__cart-items">
             <div class="js-contents">
-              <table class="table table-bordered table-hover">
+              <table class="table bordered-toptable-hover">
                 <caption class="visually-hidden">Your cart</caption>
                 <thead>
                   <tr>
-                    <th class="caption-with-letter-spacing" colspan="2" scope="col">Продукт</th>
-                    <th class="caption-with-letter-spacing" colspan="1" scope="col">Всего</th>
-                    <th class="caption-with-letter-spacing small-hide" colspan="1" scope="col">Количество</th>
-                    <th class="caption-with-letter-spacing small-hide" colspan="1" scope="col">Всего</th>
+                    <th class="col-1" scope="col">Продукт</th>
+                    <th class="col-4" scope="col"></th>
+                    <th class="col-3 small-hide" scope="col">Количество</th>
+                    <th class="col-3 small-hide text-end" scope="col">Всего</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for item in cart_items %}
                   <tr class="cart-item" id="CartItem-{{ forloop.counter }}">
-                    <td class="cart-item__media">
-                      <a href="{{ item.product.get_absolute_url }}" class="cart-item__link" aria-hidden="true" tabindex="-1">
-                        <img src="{{ item.product.main_image.url }}" class="img-fluid" alt="{{ item.product.name }}" loading="lazy" width="150" height="131">
-                      </a>
+                    <td class="cart-item__media col-1 py-5">
+                      <img src="{{ item.product.main_image.url }}" class="img-fluid" alt="{{ item.product.title }}" loading="lazy" width="150" height="131">
                     </td>
-                    <td class="cart-item__details">
-                      <a href="{{ item.product.get_absolute_url }}" class="h4">{{ item.product.name }}</a>
-                      <div class="product-option">{{ item.product.title }} {{ item.product.price }}</div>
+                    <td class="cart-item__details col-4 px-5 py-5">
+                      <a href="{% url 'collections_detail' item.product.id %}" class="product-link">{{ item.product.title }}</a>
+                      <div class="product-option">{{ item.product.price }} ₽</div>
                     </td>
-                    <td class="cart-item__totals right medium-hide large-up-hide">
-                      <div class="loading-overlay hidden">
-                        <div class="loading-overlay__spinner">
-                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="cart-item__price-wrapper">
-                        <span class="price price--end">{{ item.total_price }}</span>
-                      </div>
-                    </td>
-                    <td class="cart-item__quantity small-hide">
+                    <td class="cart-item__quantity col-3 small-hide py-5">
                       <div class="cart-item__quantity-wrapper d-flex align-items-center">
-
                         <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
                           {% csrf_token %}
                           <input type="hidden" name="action" value="decrease">
                           <button class="btn btn-outline-secondary" type="submit">
                             <span class="visually-hidden">Decrease quantity for {{ item.product.name }}</span>
-                            <i class="bi bi-dash"></i>
+                            <i class="fas fa-minus"></i>
                           </button>
                         </form>
-
-                        <input class="form-control quantity__input mx-2" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly>
+                        <input class="form-control quantity__input mx-2 text-center" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly style="width: 50px;">
                         <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
                           {% csrf_token %}
                           <input type="hidden" name="action" value="increase">
                           <button class="btn btn-outline-secondary" type="submit">
                             <span class="visually-hidden">Increase quantity for {{ item.product.name }}</span>
-                            <i class="bi bi-plus"></i>
+                            <i class="fas fa-plus"></i>
                           </button>
                         </form>
-                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}" class="d-inline-block ml-2">
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}" class="d-inline-block ml-2 ps-4">
                           {% csrf_token %}
                           <button class="btn btn-outline-danger" type="submit">
                             <span class="visually-hidden">Remove {{ item.product.name }}</span>
-                            <i class="bi bi-trash"></i>
+                            <i class="fas fa-trash"></i>
                           </button>
                         </form>
                       </div>
                     </td>
-                    <td class="cart-item__totals right small-hide">
-                      <div class="loading-overlay hidden">
-                        <div class="loading-overlay__spinner">
-                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="cart-item__price-wrapper">
-                        <span class="price price--end">{{ item.total_price }}</span>
+                    <td class="cart-item__totals col-3 right small-hide py-5">
+                      <div class="cart-item__price-wrapper text-end">
+                        <span class="price price--end">{{ item.total_price }} ₽</span>
                       </div>
                     </td>
                   </tr>
@@ -119,4 +97,5 @@
       {% endif %}
     </cart-items>
   </div>
+
 {% endblock %}
