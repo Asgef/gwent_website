@@ -67,6 +67,29 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
 .quantity__input {
   -moz-appearance: textfield;
+}
+
+.price--end {
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .cart-item__quantity-wrapper {
+    margin-top: 10px;
+    display: flex;
+    justify-content: start;
+    flex-wrap: nowrap;
+  }
+
+  .cart-item__quantity-wrapper .btn,
+  .cart-item__quantity-wrapper .form-control {
+    margin: 0 5px;
+  }
+
+  .cart-item__quantity-wrapper .btn-outline-danger {
+    margin-left: 10px;
+  }
 }

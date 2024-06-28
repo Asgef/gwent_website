@@ -30,8 +30,8 @@
                   <tr>
                     <th class="col-1" scope="col">Продукт</th>
                     <th class="col-4" scope="col"></th>
-                    <th class="col-3 small-hide" scope="col">Количество</th>
-                    <th class="col-3 small-hide text-end" scope="col">Всего</th>
+                    <th class="col-3 d-none d-md-table-cell" scope="col">Количество</th>
+                    <th class="col-3 text-end" scope="col">Всего</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,8 +43,34 @@
                     <td class="cart-item__details col-4 px-5 py-5">
                       <a href="{% url 'collections_detail' item.product.id %}" class="product-link">{{ item.product.title }}</a>
                       <div class="product-option">{{ item.product.price }} ₽</div>
+                      <div class="cart-item__quantity-wrapper d-flex align-items-center mt-3 d-md-none">
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="decrease">
+                          <button class="btn btn-outline-secondary" type="submit">
+                            <span class="visually-hidden">Decrease quantity for {{ item.product.name }}</span>
+                            <i class="fas fa-minus"></i>
+                          </button>
+                        </form>
+                        <input class="form-control quantity__input mx-2 text-center" type="number" name="quantity" value="{{ item.quantity }}" min="1" aria-label="Quantity for {{ item.product.name }}" id="Quantity-{{ forloop.counter }}" data-index="{{ forloop.counter }}" readonly style="width: 50px;">
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="increase">
+                          <button class="btn btn-outline-secondary" type="submit">
+                            <span class="visually-hidden">Increase quantity for {{ item.product.name }}</span>
+                            <i class="fas fa-plus"></i>
+                          </button>
+                        </form>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}" class="d-inline-block ml-2">
+                          {% csrf_token %}
+                          <button class="btn btn-outline-danger" type="submit">
+                            <span class="visually-hidden">Remove {{ item.product.name }}</span>
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </div>
                     </td>
-                    <td class="cart-item__quantity col-3 small-hide py-5">
+                    <td class="cart-item__quantity col-3 py-5 d-none d-md-table-cell">
                       <div class="cart-item__quantity-wrapper d-flex align-items-center">
                         <form action="{% url 'update_cart' item.product.id %}" method="post" class="d-inline-block">
                           {% csrf_token %}
@@ -72,7 +98,7 @@
                         </form>
                       </div>
                     </td>
-                    <td class="cart-item__totals col-3 right small-hide py-5">
+                    <td class="cart-item__totals col-3 right py-5">
                       <div class="cart-item__price-wrapper text-end">
                         <span class="price price--end">{{ item.total_price }} ₽</span>
                       </div>
