@@ -73,7 +73,7 @@
 }
 
 .price--end {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
@@ -86,10 +86,19 @@
 
   .cart-item__quantity-wrapper .btn,
   .cart-item__quantity-wrapper .form-control {
-    margin: 0 5px;
+    margin: 0 1px;
   }
 
   .cart-item__quantity-wrapper .btn-outline-danger {
-    margin-left: 10px;
+    margin-left: 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .cart-item__details {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
   }
 }

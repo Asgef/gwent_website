@@ -51,7 +51,7 @@
     <!-- Область для текста -->
     <div class="col-lg-4 col-md-6">
       <h1>{{ product.title }}</h1>
-      <p class="text-muted">Цена: {{ product.price }} ₽</p>
+      <p class="text-muted">Цена: {{ product.price|floatformat:"-2" }} ₽</p>
       <p>{{ product.description }}</p>
       <p class="text-muted">Жанр: {{ product.get_genre_display }}</p>
       <p class="text-muted">Издатель: {{ product.publisher }}</p>
