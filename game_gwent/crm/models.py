@@ -17,7 +17,9 @@ class Address(models.Model):
     region = models.CharField(max_length=100)
     city = models.CharField(max_length=100, null=True, blank=True)
     street = models.CharField(max_length=225, null=True, blank=True)
-    house = models.CharField(max_length=10)
+    house = models.CharField(
+        max_length=10, verbose_name="Номер дома", null=True, blank=True
+    )
     apt = models.CharField(max_length=10, null=True, blank=True)
     postal_code = models.CharField(max_length=20, null=True, blank=True)
 
