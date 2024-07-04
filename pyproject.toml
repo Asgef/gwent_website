@@ -19,6 +19,9 @@ pillow = "^10.3.0"
 firebase-admin = "^6.5.0"
 django-storages = "^1.14.3"
 django-extensions = "^3.2.3"
+django-phonenumber-field = "^8.0.0"
+phonenumbers = "^8.13.40"
+dadata = "^21.10.1"
 
 
 [tool.poetry.group.dev.dependencies]

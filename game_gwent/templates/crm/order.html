@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Данные пользователя</h2>
+        {{ user_form.as_p }}
+        <h2>Адрес</h2>
+        {{ address_form.as_p }}
+        <h2>Ваша корзина</h2>
+        <ul>
+            {% for item in cart_items %}
+                <li>{{ item.product.title }} - {{ item.quantity }} x {{ item.product.price }} = {{ item.total_price }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Всего: {{ total }}</h3>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Подключение jQuery и DaData Suggestions -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/css/suggestions.min.css">
+
+    <!-- Вставка API ключа в скрытый элемент -->
+    <meta name="dadata-api-key" content="{{ DADATA_API_KEY }}">
+
+    <script src="{% static 'game_gwent/crm/js/dadata_autocomplete.js' %}"></script>
+{% endblock %}

@@ -26,4 +26,5 @@ urlpatterns = [
     path('contact/', ContactPageView.as_view(), name='contact'),
     path('collections/', include('game_gwent.catalog.urls')),
     path('cart/', include('game_gwent.cart.urls')),
+    path('checkouts/', include('game_gwent.crm.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

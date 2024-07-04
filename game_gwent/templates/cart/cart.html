@@ -117,7 +117,7 @@
               <span class="subtotal__price">{{ total|floatformat:"-2" }} ₽</span>
             </div>
             <p class="taxes-and-shipping">Налоги и доставка рассчитываются при оформлении заказа</p>
-            <a href="#" class="btn btn-primary checkout-btn">Купить</a>
+            <a href="{% url 'add_order' %}" class="btn btn-primary checkout-btn">Купить</a>
           </div>
         </div>
       {% endif %}

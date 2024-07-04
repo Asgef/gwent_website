@@ -14,12 +14,10 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -36,7 +34,6 @@ PRODUCTION = os.getenv('PRODUCTION', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,9 +47,11 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'storages',
     'django_extensions',
+    'phonenumber_field',
     'game_gwent',
     'game_gwent.catalog',
     'game_gwent.cart',
+    'game_gwent.crm'
 ]
 
 MIDDLEWARE = [
@@ -86,7 +85,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'game_gwent.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -96,7 +94,6 @@ DATABASES = {
         conn_max_age=600,
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -116,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [  # noqa: E501
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -127,7 +123,6 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -143,9 +138,7 @@ if PRODUCTION:
 else:
     storage_class = 'django.core.files.storage.FileSystemStorage'
 
-
 DEFAULT_FILE_STORAGE = storage_class
-
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -163,3 +156,8 @@ CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FIXTURE_DIRS = ('game_gwent/tests/fixtures/',)
+
+PRODUCT_DELIVERY_PRICE = 400  # TODO: Временный вариант ценообразования
+
+DADATA_API_KEY = os.getenv('DADATA_API_KEY')
+DADATA_SECRET_KEY = os.getenv('DADATA_SECRET_KEY')
