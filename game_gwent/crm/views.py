@@ -13,7 +13,7 @@ from django.views import View
 
 
 class OrderDetailView(
-    ExtraContextMixin, CartStatusMixin, CartDetailMixin, TemplateView
+    ExtraContextMixin, CartDetailMixin, TemplateView
 ):
     model = Product
     template_name = 'crm/order.html'
@@ -73,5 +73,4 @@ class OrderDetailView(
 #         request.session['cart'] = cart
 #         return redirect(reverse('cart_detail'))
 #
-#     # TODO: Доработать добавление товара в корзину.
 #

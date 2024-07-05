@@ -5,23 +5,32 @@ from game_gwent.catalog.models import Product
 
 
 class User(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    patronymic = models.CharField(max_length=100)
-    phone_num = PhoneNumberField(region='RU')
+    first_name = models.CharField(max_length=100, verbose_name="Имя")
+    last_name = models.CharField(max_length=100, verbose_name="Фамилия")
+    patronymic = models.CharField(max_length=100, verbose_name="Отчество")
+    phone_num = PhoneNumberField(region='RU', verbose_name="Номер телефона")
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Address(models.Model):
-    region = models.CharField(max_length=100)
-    city = models.CharField(max_length=100, null=True, blank=True)
-    street = models.CharField(max_length=225, null=True, blank=True)
+    region = models.CharField(max_length=100, verbose_name="Область")
+    city = models.CharField(
+        max_length=100, null=True, blank=True,
+        verbose_name="Город / Населенный пункт"
+    )
+    street = models.CharField(
+        max_length=225, null=True, blank=True, verbose_name="Улица"
+    )
     house = models.CharField(
         max_length=10, verbose_name="Номер дома", null=True, blank=True
     )
-    apt = models.CharField(max_length=10, null=True, blank=True)
-    postal_code = models.CharField(max_length=20, null=True, blank=True)
+    apt = models.CharField(
+        max_length=10, null=True, blank=True, verbose_name="Квартира"
+    )
+    postal_code = models.CharField(
+        max_length=20, null=True, blank=True, verbose_name="Почтовый индекс"
+    )
 
     def __str__(self):
         return f'{self.street}, {self.city}, {self.region}, {self.postal_code}'

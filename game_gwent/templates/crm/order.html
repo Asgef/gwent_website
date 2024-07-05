@@ -5,29 +5,55 @@
 
 {% block content %}
 <h1>Оформление заказа</h1>
-    <form method="post">
-        {% csrf_token %}
-        <h2>Данные пользователя</h2>
-        {{ user_form.as_p }}
-        <h2>Адрес</h2>
-        {{ address_form.as_p }}
-        <h2>Ваша корзина</h2>
-        <ul>
-            {% for item in cart_items %}
-                <li>{{ item.product.title }} - {{ item.quantity }} x {{ item.product.price }} = {{ item.total_price }}</li>
-            {% endfor %}
-        </ul>
-        <h3>Всего: {{ total }}</h3>
-        <button type="submit">Submit</button>
-    </form>
+<form method="post">
+    {% csrf_token %}
+    <h2>Данные пользователя</h2>
+    {{ user_form.as_p }}
+    <h2>Адрес</h2>
+    {{ address_form.as_p }}
+    <h2>Ваша корзина</h2>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Изображение товара</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td class="position-relative">
+                        <div class="position-relative" style="width: 64px; height: 64px;">
+                            <img src="{{ item.product.main_image.url }}" alt="{{ item.product.title }}" class="img-thumbnail" style="width: 100%; height: 100%;">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="transform: translate(-50%, -50%) !important;">
+                                {{ item.quantity }}
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <p>{{ item.product.title }}</p>
+                    </td>
+                    <td>
+                        <span>{{ item.total_price|floatformat:"-2" }} ₽</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <h3>Всего: {{ total|floatformat:"-2" }} ₽</h3>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-    <!-- Подключение jQuery и DaData Suggestions -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/css/suggestions.min.css">
+<!-- Подключение jQuery и DaData Suggestions -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/css/suggestions.min.css">
 
-    <!-- Вставка API ключа в скрытый элемент -->
-    <meta name="dadata-api-key" content="{{ DADATA_API_KEY }}">
+<!-- Вставка API ключа в скрытый элемент -->
+<meta name="dadata-api-key" content="{{ DADATA_API_KEY }}">
 
-    <script src="{% static 'game_gwent/crm/js/dadata_autocomplete.js' %}"></script>
+<script src="{% static 'game_gwent/crm/js/dadata_autocomplete.js' %}"></script>
 {% endblock %}

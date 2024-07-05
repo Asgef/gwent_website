@@ -1,5 +1,6 @@
 from django import forms
 from .models import User, Address, Order, OrderItem
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class OrderForm(forms.ModelForm):
@@ -15,6 +16,8 @@ class OrderItemForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
+    phone_num = PhoneNumberField(blank=False, region='RU')
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'patronymic', 'phone_num', 'email']
