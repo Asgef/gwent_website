@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from game_gwent.validators import validate_and_clean_address
 
 from game_gwent.catalog.models import Product
 
@@ -14,7 +15,9 @@ class User(models.Model):
 
 
 class Address(models.Model):
-    region = models.CharField(max_length=100, verbose_name="Область")
+    region = models.CharField(
+        max_length=100, verbose_name="Область"
+    )
     city = models.CharField(
         max_length=100, null=True, blank=True,
         verbose_name="Город / Населенный пункт"
@@ -32,8 +35,14 @@ class Address(models.Model):
         max_length=20, null=True, blank=True, verbose_name="Почтовый индекс"
     )
 
+    def clean(self):
+        validate_and_clean_address(self)
+
     def __str__(self):
-        return f'{self.street}, {self.city}, {self.region}, {self.postal_code}'
+        return (
+            f'{self.region}, {self.city}, {self.street},'
+            f'{self.house}, {self.apt}, {self.postal_code}'
+        )
 
 
 
@@ -42,6 +51,9 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Всего"
+    )
+    address = models.ForeignKey(
+        Address, on_delete=models.CASCADE, null=True, blank=True
     )
     paid = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
