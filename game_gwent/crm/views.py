@@ -1,25 +1,24 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import FormView
+
 from game_gwent.mixins import (
     ExtraContextMixin, CartDetailMixin
 )
 from .forms import UserForm, AddressForm, OrderForm
 from django.conf import settings
-from .models import Order, OrderItem
+from .models import OrderItem, User, Address
 
 
 class OrderDetailView(
-    ExtraContextMixin, CartDetailMixin, CreateView
+    ExtraContextMixin, CartDetailMixin, FormView
 ):
-    model = Order
-    form_class = OrderForm
     template_name = 'crm/order.html'
-    context_object_name = 'order'
+    form_class = OrderForm
     extra_context = {
         'title': 'Оформление заказа',
     }
-    # success_url = reverse_lazy('order_success')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,47 +28,83 @@ class OrderDetailView(
         context['user_form'] = UserForm(self.request.POST or None)
         context['address_form'] = AddressForm(self.request.POST or None)
         context['order_form'] = OrderForm(
-            initial={'total_price': total},
-            data=self.request.POST or None
+            self.request.POST or None, initial={'total_price': total}
         )
         context['DADATA_API_KEY'] = settings.DADATA_API_KEY
         return context
 
-    def post(self, request, *args, **kwargs):
-        user_forms = UserForm(request.POST)
-        address_form = AddressForm(request.POST)
-        order_form = OrderForm(request.POST)
+    def form_valid(self, form):
+        user_form = UserForm(self.request.POST)
+        address_form = AddressForm(self.request.POST)
 
-        forms = [
-            user_forms.is_valid(), address_form.is_valid(),
-            order_form.is_valid()
-        ]
+        if user_form.is_valid() and address_form.is_valid():
+            user_data = user_form.cleaned_data
+            address_data = address_form.cleaned_data
 
-        if all(forms):
-            user = user_forms.save()
-            address = address_form.save()
-            order = order_form.save(commit=False)
+            # Создаём или пере используем пользователя и адрес
+            user, created_user = User.objects.get_or_create(
+                first_name=user_data['first_name'],
+                last_name=user_data['last_name'],
+                patronymic=user_data['patronymic'],
+                phone_num=user_data['phone_num'],
+                email=user_data['email'],
+            )
+
+            address, created_address = Address.objects.get_or_create(
+                region=address_data['region'],
+                city=address_data['city'],
+                street=address_data['street'],
+                house=address_data['house'],
+                apt=address_data['apt'],
+                postal_code=address_data['postal_code'],
+            )
+
+            # Сохраняем заказ без записи в БД
+            order = form.save(commit=False)
             order.customer = user
             order.address = address
 
+            # Получаем элементы корзины и общую сумму
             cart_items, total = self.get_cart_items()
+
+            # Устанавливаем total_price перед сохранением заказа
             order.total_price = total
             order.save()
 
+            # Создаем OrderItem для каждого товара в корзине
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
                     product=item['product'],
-                    quantity=item['quantity']
+                    quantity=item['quantity'],
+                    product_price_at_order=item['product'].price
                 )
 
-            request.session['cart'] = {}
+            # Очищаем корзину
+            self.request.session['cart'] = {}
 
-            return redirect(
-                reverse_lazy(
-                    'payment_page', kwargs={
-                        'order_id': order.id, 'amount': order.total_price
-                    }
-                )
+            # Заглушка для редиректа на сервис оплаты
+            payment_url = reverse_lazy('payment_placeholder', kwargs={
+                'order_id': order.id,
+            })
+
+            return redirect(payment_url)
+
+        # Если форма не валидна, возвращаем данные формы
+        # TODO: Реализовать флеш сообщения
+        return self.render_to_response(
+            self.get_context_data(
+                form=form, user_form=user_form, address_form=address_form
             )
-        return self.render_to_response(self.get_context_data())
+        )
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+def payment_placeholder(request, order_id):
+    return HttpResponse(f'Оплата заказа №{order_id}.')

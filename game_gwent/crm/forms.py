@@ -6,7 +6,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['total_price']
+        fields = []
 
 
 class OrderItemForm(forms.ModelForm):
@@ -42,10 +42,3 @@ class AddressForm(forms.ModelForm):
             'data-autocomplete-url': '/autocomplete/address/'
         })
 
-    def clean_postal_code(self):
-        postal_code = self.cleaned_data('postal_code')
-        if not postal_code.isdigit():
-            raise forms.ValidationError(
-                "Почтовый индекс должен содержать только цифры."
-            )
-        return postal_code
