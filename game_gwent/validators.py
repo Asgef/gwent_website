@@ -6,7 +6,7 @@
 def validate_and_clean_address(address_instance):
     pass
 #     token = settings.DADATA_API_KEY
-#     url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address"
+#     url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address"  # noqa E501
 #     headers = {
 #         "Content-Type": "application/json",
 #         "Accept": "application/json",
@@ -29,7 +29,9 @@ def validate_and_clean_address(address_instance):
 #     print("Response JSON:", result)
 #
 #     if response.status_code != 200 or not result.get("suggestions"):
-#         raise ValidationError(f"Invalid address. Full address: {full_address}")
+#         raise ValidationError(
+#         f"Invalid address. Full address: {full_address}"
+#         )
 #
 #     cleaned_address = result["suggestions"][0]["data"]
 #     address_instance.street = cleaned_address.get(

@@ -1,76 +1,75 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import redirect
-from django.urls import reverse
-from game_gwent.catalog.models import Product
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from game_gwent.mixins import (
-    ExtraContextMixin, CartStatusMixin, CartDetailMixin
+    ExtraContextMixin, CartDetailMixin
 )
-from .forms import UserForm, AdressForm, OrderForm
+from .forms import UserForm, AddressForm, OrderForm
 from django.conf import settings
-from .models import User, Address, Order, OrderItem
-from django.views import View
+from .models import Order, OrderItem
 
 
 class OrderDetailView(
-    ExtraContextMixin, CartDetailMixin, TemplateView
+    ExtraContextMixin, CartDetailMixin, CreateView
 ):
-    model = Product
+    model = Order
+    form_class = OrderForm
     template_name = 'crm/order.html'
     context_object_name = 'order'
     extra_context = {
         'title': 'Оформление заказа',
     }
+    # success_url = reverse_lazy('order_success')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_items, total = self.get_cart_items()
         context['cart_items'] = cart_items
         context['total'] = total
-        context['user_form'] = UserForm()
-        context['address_form'] = AdressForm()
-        context['order_form'] = OrderForm(initial={'total_price': total})
+        context['user_form'] = UserForm(self.request.POST or None)
+        context['address_form'] = AddressForm(self.request.POST or None)
+        context['order_form'] = OrderForm(
+            initial={'total_price': total},
+            data=self.request.POST or None
+        )
         context['DADATA_API_KEY'] = settings.DADATA_API_KEY
         return context
-#
-#
-#
-# class AddToCartView(View):
-#     def post(self, request, pk):
-#         cart = request.session.get('cart', {})
-#         quantity = int(request.POST.get('quantity', 1))
-#         if str(pk) in cart:
-#             cart[str(pk)] += quantity
-#         else:
-#             cart[str(pk)] = quantity
-#         request.session['cart'] = cart
-#         return redirect(reverse('cart_detail'))
-#
-#
-# class RemoveFromCartView(View):
-#     def post(self, request, pk):
-#         cart = request.session.get('cart', {})
-#         if str(pk) in cart:
-#             del cart[str(pk)]
-#             request.session['cart'] = cart
-#         return redirect(reverse('cart_detail'))
-#
-#
-# class UpdateCartView(View):
-#     def post(self, request, pk):
-#         cart = request.session.get('cart', {})
-#         action = request.POST.get('action')
-#
-#         product = Product.objects.get(id=pk)
-#         min_quantity = 1
-#         max_quantity = product.stock
-#
-#         if action == 'increase' and cart[str(pk)] < max_quantity:
-#             cart[str(pk)] += 1
-#         elif action == 'decrease' and cart[str(pk)] > min_quantity:
-#             cart[str(pk)] -= 1
-#
-#         request.session['cart'] = cart
-#         return redirect(reverse('cart_detail'))
-#
-#
+
+    def post(self, request, *args, **kwargs):
+        user_forms = UserForm(request.POST)
+        address_form = AddressForm(request.POST)
+        order_form = OrderForm(request.POST)
+
+        forms = [
+            user_forms.is_valid(), address_form.is_valid(),
+            order_form.is_valid()
+        ]
+
+        if all(forms):
+            user = user_forms.save()
+            address = address_form.save()
+            order = order_form.save(commit=False)
+            order.customer = user
+            order.address = address
+
+            cart_items, total = self.get_cart_items()
+            order.total_price = total
+            order.save()
+
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item['product'],
+                    quantity=item['quantity']
+                )
+
+            request.session['cart'] = {}
+
+            return redirect(
+                reverse_lazy(
+                    'payment_page', kwargs={
+                        'order_id': order.id, 'amount': order.total_price
+                    }
+                )
+            )
+        return self.render_to_response(self.get_context_data())

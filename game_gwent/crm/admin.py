@@ -1,8 +1,6 @@
 from django.contrib import admin, messages
 from django import forms
-
 from django.core.exceptions import ValidationError
-
 from .models import Order, User, Address, OrderItem
 
 
@@ -25,6 +23,7 @@ class AddressForm(forms.ModelForm):
                 messages.add_message(self.request, messages.ERROR, str(e))
             raise
 
+
 class AddressAdmin(admin.ModelAdmin):
     form = AddressForm
 
@@ -33,17 +32,26 @@ class AddressAdmin(admin.ModelAdmin):
         form.request = request
         return form
 
+
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
 
+
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'customer', 'address_display', 'total_price', 'paid', 'created_at')
+    list_display = (
+        'id', 'customer', 'address_display', 'total_price',
+        'paid', 'created_at'
+    )
     inlines = [OrderItemInline]
 
     def address_display(self, obj):
-        return f"{obj.address.street}, {obj.address.city}, {obj.address.region}, {obj.address.postal_code}"
+        return (
+            f"{obj.address.street}, {obj.address.city},"
+            f"{obj.address.region}, {obj.address.postal_code}"
+        )
     address_display.short_description = 'Address'
+
 
 admin.site.register(User)
 admin.site.register(Address, AddressAdmin)

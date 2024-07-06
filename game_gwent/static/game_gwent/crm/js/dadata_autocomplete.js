@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Считываем значение API ключа из мета-тега
     var token = $('meta[name="dadata-api-key"]').attr('content');
 
-    console.log("Using DADATA_API_KEY:", token);  // Для отладки
+//    console.log("Using DADATA_API_KEY:", token);
 
     function enforceRegion(suggestion) {
         var sgt = $("#id_street").suggestions();

@@ -57,4 +57,3 @@ class CartDetailMixin:  # noqa: D101
         context['cart_items'] = cart_items
         context['total'] = total
         return context
-

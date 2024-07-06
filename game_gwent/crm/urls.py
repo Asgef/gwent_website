@@ -7,4 +7,5 @@ urlpatterns = [
         '', OrderDetailView.as_view(),
         name='add_order'
     ),
+
 ]

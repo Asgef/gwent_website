@@ -45,8 +45,6 @@ class Address(models.Model):
         )
 
 
-
-
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     total_price = models.DecimalField(

@@ -160,4 +160,6 @@ FIXTURE_DIRS = ('game_gwent/tests/fixtures/',)
 PRODUCT_DELIVERY_PRICE = 400  # TODO: Временный вариант ценообразования
 
 DADATA_API_KEY = os.getenv('DADATA_API_KEY')
-DADATA_SECRET_KEY = os.getenv('DADATA_SECRET_KEY')
+
+YOOKASSA_SECRET_KEY = os.getenv('YOOKASSA_SECRET_KEY')
+YOOKASSA_SHOP_ID = os.getenv('YOOKASSA_SHOP_ID')

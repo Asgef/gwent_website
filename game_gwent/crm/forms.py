@@ -23,10 +23,10 @@ class UserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'patronymic', 'phone_num', 'email']
 
 
-class AdressForm(forms.ModelForm):
+class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ['region', 'city',  'street', 'house', 'apt', 'postal_code']
+        fields = ['region', 'city', 'street', 'house', 'apt', 'postal_code']
         widgets = {
             'region': forms.TextInput(attrs={'id': 'id_region'}),
             'city': forms.TextInput(attrs={'id': 'id_city'}),
@@ -41,3 +41,11 @@ class AdressForm(forms.ModelForm):
         self.fields['street'].widget.attrs.update({
             'data-autocomplete-url': '/autocomplete/address/'
         })
+
+    def clean_postal_code(self):
+        postal_code = self.cleaned_data('postal_code')
+        if not postal_code.isdigit():
+            raise forms.ValidationError(
+                "Почтовый индекс должен содержать только цифры."
+            )
+        return postal_code
