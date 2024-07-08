@@ -43,6 +43,8 @@
             </tbody>
         </table>
     </div>
+    <h2>Комментарий к заказу</h2>
+    {{ order_form.as_p }}
     <h3>Всего: {{ total|floatformat:"-2" }} ₽</h3>
     <button type="submit" class="btn btn-primary">Купить</button>
 </form>

@@ -9,7 +9,11 @@ from game_gwent.mixins import (
 from .forms import UserForm, AddressForm, OrderForm
 from django.conf import settings
 from .models import OrderItem, User, Address
+import uuid
+from yookassa import Configuration, Payment
 
+Configuration.account_id = settings.YOOKASSA_SHOP_ID
+Configuration.secret_key = settings.YOOKASSA_SECRET_KEY
 
 class OrderDetailView(
     ExtraContextMixin, CartDetailMixin, FormView
@@ -27,9 +31,7 @@ class OrderDetailView(
         context['total'] = total
         context['user_form'] = UserForm(self.request.POST or None)
         context['address_form'] = AddressForm(self.request.POST or None)
-        context['order_form'] = OrderForm(
-            self.request.POST or None, initial={'total_price': total}
-        )
+        context['order_form'] = OrderForm(self.request.POST or None)
         context['DADATA_API_KEY'] = settings.DADATA_API_KEY
         return context
 
@@ -83,12 +85,10 @@ class OrderDetailView(
             # Очищаем корзину
             self.request.session['cart'] = {}
 
-            # Заглушка для редиректа на сервис оплаты
-            payment_url = reverse_lazy('payment_placeholder', kwargs={
-                'order_id': order.id,
-            })
+            # Создаём платёж через Yookassa
+            payment = self.create_yookassa_payment(order, total)
 
-            return redirect(payment_url)
+            return redirect(payment)
 
         # Если форма не валидна, возвращаем данные формы
         # TODO: Реализовать флеш сообщения
@@ -105,6 +105,27 @@ class OrderDetailView(
         else:
             return self.form_invalid(form)
 
+    def create_yookassa_payment(self, order, total_price):
+        idempotence_key = uuid.uuid4()
 
-def payment_placeholder(request, order_id):
-    return HttpResponse(f'Оплата заказа №{order_id}.')
+        payment = Payment.create({
+            "amount": {
+                "value": f"{total_price:.2f}",
+                "currency": "RUB"
+            },
+            "confirmation": {
+                "type": "redirect",
+                "return_url":
+                    self.request.build_absolute_uri(reverse_lazy('payment_success'))
+                    # "https://gwent-website.onrender.com/"
+                    # TODO: Освоить инструмент тестирования реверси на локальную машину  # noqa
+            },
+            "capture": True,
+            "description": f"Оплата заказа №{order.id}"
+        }, idempotence_key)
+
+        return payment.confirmation.confirmation_url
+
+
+def payment_success(request):
+    return HttpResponse("Платеж успешно завершен.")

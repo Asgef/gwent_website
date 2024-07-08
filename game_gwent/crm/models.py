@@ -53,6 +53,10 @@ class Order(models.Model):
     address = models.ForeignKey(
         Address, on_delete=models.CASCADE, null=True, blank=True
     )
+    user_comment = models.CharField(
+        max_length=225, null=True, blank=True,
+        verbose_name="Комментарий к заказу"
+    )
     paid = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
