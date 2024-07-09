@@ -4,15 +4,16 @@ from .webhooks import yookassa_webhook
 
 
 urlpatterns = [
+
     path(
         '', OrderDetailView.as_view(),
         name='add_order'
     ),
-path(
+    path(
         'payment_success', payment_success,
         name='payment_success'
     ),
-path(
+    path(
         'verify', yookassa_webhook,
         name='verify'
     ),

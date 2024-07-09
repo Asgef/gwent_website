@@ -11,10 +11,11 @@ from django.conf import settings
 from .models import OrderItem, User, Address
 import uuid
 from yookassa import Configuration, Payment
-import os
+
 
 Configuration.account_id = settings.YOOKASSA_SHOP_ID
 Configuration.secret_key = settings.YOOKASSA_SECRET_KEY
+
 
 class OrderDetailView(
     ExtraContextMixin, CartDetailMixin, FormView
@@ -109,12 +110,13 @@ class OrderDetailView(
     def create_yookassa_payment(self, order, total_price):
         idempotence_key = uuid.uuid4()
 
-        if settings.DEBUG:
-            return_url = f"{settings.NGROK_URL}{reverse_lazy('payment_success')}"
-            if not return_url:
+        if not settings.PRODUCTION:
+            ngrok_url = settings.NGROK_URL
+            if not ngrok_url:
                 raise ValueError(
                     "При локальной разработке следует запустить ngrok"
                 )
+            return_url = f"{ngrok_url}{reverse_lazy('payment_success')}"
         else:
             return_url = self.request.build_absolute_uri(
                 reverse_lazy('payment_success')

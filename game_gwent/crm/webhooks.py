@@ -1,15 +1,15 @@
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from game_gwent.crm.models import Order
 import json
 from django.http import HttpResponse
-from yookassa import Configuration, Payment
-from yookassa.domain.notification import WebhookNotificationEventType, WebhookNotificationFactory
+from game_gwent.crm.models import Order
 from yookassa.domain.common import SecurityHelper
+from django.views.decorators.csrf import csrf_exempt
+from yookassa.domain.notification import (
+    WebhookNotificationEventType, WebhookNotificationFactory
+)
 
 
 @csrf_exempt
-def yookassa_webhook(request):
+def yookassa_webhook(request):  # noqa C901
     # Если хотите убедиться, что запрос пришел от ЮКасса, добавьте проверку:
     ip = get_client_ip(request)  # Получите IP запроса
     if not SecurityHelper().is_ip_trusted(ip):
@@ -22,7 +22,7 @@ def yookassa_webhook(request):
         notification_object = WebhookNotificationFactory().create(event_json)
         response_object = notification_object.object
 
-        if notification_object.event == WebhookNotificationEventType.PAYMENT_SUCCEEDED:
+        if notification_object.event == WebhookNotificationEventType.PAYMENT_SUCCEEDED:  # noqa: E501
             order_id = response_object.metadata.get('order_id')
             print(f'ORDER_ID = {order_id}')
             if order_id:

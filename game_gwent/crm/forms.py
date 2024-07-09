@@ -41,4 +41,3 @@ class AddressForm(forms.ModelForm):
         self.fields['street'].widget.attrs.update({
             'data-autocomplete-url': '/autocomplete/address/'
         })
-

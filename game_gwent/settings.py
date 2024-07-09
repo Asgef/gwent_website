@@ -166,4 +166,3 @@ YOOKASSA_SHOP_ID = os.getenv('YOOKASSA_SHOP_ID')
 
 NGROK_AUTHTOKEN = os.getenv('NGROK_AUTHTOKEN')
 NGROK_URL = os.getenv('NGROK_URL', 'http://127.0.0.1:8000')
-print(NGROK_URL)
