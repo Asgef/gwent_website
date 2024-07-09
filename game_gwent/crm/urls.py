@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import OrderDetailView, payment_success
+from .webhooks import yookassa_webhook
 
 
 urlpatterns = [
@@ -10,6 +11,10 @@ urlpatterns = [
 path(
         'payment_success', payment_success,
         name='payment_success'
+    ),
+path(
+        'verify', yookassa_webhook,
+        name='verify'
     ),
 
 ]

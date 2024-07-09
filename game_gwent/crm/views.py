@@ -130,7 +130,10 @@ class OrderDetailView(
                 "return_url": return_url
             },
             "capture": True,
-            "description": f"Оплата заказа №{order.id}"
+            "description": f"Оплата заказа №{order.id}",
+            "metadata": {
+                "order_id": str(order.id)
+            }
         }, idempotence_key)
 
         return payment.confirmation.confirmation_url
