@@ -1,6 +1,6 @@
 from django import forms
 from .models import User, Address, Order, OrderItem
-from phonenumber_field.modelfields import PhoneNumberField
+from phonenumber_field.formfields import PhoneNumberField as FormPhoneNumberField
 
 
 class OrderForm(forms.ModelForm):
@@ -16,7 +16,10 @@ class OrderItemForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
-    phone_num = PhoneNumberField(blank=False, region='RU')
+    phone_num = FormPhoneNumberField(
+        label='Номер телефона',
+        widget=forms.TextInput(attrs={'placeholder': '+7'})
+    )
 
     class Meta:
         model = User
@@ -26,14 +29,14 @@ class UserForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ['region', 'city', 'street', 'house', 'apt', 'postal_code']
+        fields = ['postal_code', 'region', 'city', 'street', 'house', 'apt']
         widgets = {
+            'postal_code': forms.TextInput(attrs={'id': 'id_postal_code'}),
             'region': forms.TextInput(attrs={'id': 'id_region'}),
             'city': forms.TextInput(attrs={'id': 'id_city'}),
             'street': forms.TextInput(attrs={'id': 'id_street'}),
             'house': forms.TextInput(),
-            'apt': forms.TextInput(),
-            'postal_code': forms.TextInput(attrs={'id': 'id_postal_code'})
+            'apt': forms.TextInput()
         }
 
     def __init__(self, *args, **kwargs):

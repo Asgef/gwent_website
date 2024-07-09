@@ -1,7 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from game_gwent.mixins import (
     ExtraContextMixin, CartDetailMixin
@@ -141,5 +140,8 @@ class OrderDetailView(
         return payment.confirmation.confirmation_url
 
 
-def payment_success(request):
-    return HttpResponse("Платеж успешно завершен.")
+class SuccessPageView(ExtraContextMixin, TemplateView):
+    template_name = 'crm/payment_success.html'
+    extra_context = {
+        'title': 'Успешный заказ',
+    }

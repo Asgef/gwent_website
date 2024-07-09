@@ -1,54 +1,58 @@
 {% extends "layouts/base.html" %}
+{% load django_bootstrap5 %}
 {% load static %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1>Оформление заказа</h1>
-<form method="post">
-    {% csrf_token %}
-    <h2>Данные пользователя</h2>
-    {{ user_form.as_p }}
-    <h2>Адрес</h2>
-    {{ address_form.as_p }}
-    <h2>Ваша корзина</h2>
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Изображение товара</th>
-                    <th scope="col">Описание</th>
-                    <th scope="col">Цена</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td class="position-relative">
-                        <div class="position-relative" style="width: 64px; height: 64px;">
-                            <img src="{{ item.product.main_image.url }}" alt="{{ item.product.title }}" class="img-thumbnail" style="width: 100%; height: 100%;">
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="transform: translate(-50%, -50%) !important;">
-                                {{ item.quantity }}
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <p>{{ item.product.title }}</p>
-                    </td>
-                    <td>
-                        <span>{{ item.total_price|floatformat:"-2" }} ₽</span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="container">
+        <h1>Оформление заказа</h1>
+        <form method="post">
+            {% csrf_token %}
+                <div>
+                    <h2>Данные пользователя</h2>
+                    {% bootstrap_form user_form %}
+                </div>
+            <h2>Адрес</h2>
+            {% bootstrap_form address_form %}
+            <h2>Ваша корзина</h2>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Изображение товара</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Цена</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td class="position-relative">
+                                <div class="position-relative" style="width: 64px; height: 64px;">
+                                    <img src="{{ item.product.main_image.url }}" alt="{{ item.product.title }}" class="img-thumbnail" style="width: 100%; height: 100%;">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="transform: translate(-50%, -50%) !important;">
+                                        {{ item.quantity }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <p>{{ item.product.title }}</p>
+                            </td>
+                            <td>
+                                <span>{{ item.total_price|floatformat:"-2" }} ₽</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <h2>Комментарий к заказу</h2>
+            {% bootstrap_form order_form %}
+            <h3>Всего: {{ total|floatformat:"-2" }} ₽</h3>
+            <button type="submit" class="btn btn-primary">Купить</button>
+        </form>
     </div>
-    <h2>Комментарий к заказу</h2>
-    {{ order_form.as_p }}
-    <h3>Всего: {{ total|floatformat:"-2" }} ₽</h3>
-    <button type="submit" class="btn btn-primary">Купить</button>
-</form>
-
 <!-- Подключение jQuery и DaData Suggestions -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
