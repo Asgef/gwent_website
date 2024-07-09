@@ -30,6 +30,8 @@ yookassa = "^3.3.0"
 flake8 = "^7.0.0"
 ruff = "^0.4.6"
 bpython = "^0.24"
+ngrok = "^1.3.0"
+pyngrok = "^7.1.6"
 
 [build-system]
 requires = ["poetry-core"]

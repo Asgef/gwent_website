@@ -11,6 +11,7 @@ from django.conf import settings
 from .models import OrderItem, User, Address
 import uuid
 from yookassa import Configuration, Payment
+import os
 
 Configuration.account_id = settings.YOOKASSA_SHOP_ID
 Configuration.secret_key = settings.YOOKASSA_SECRET_KEY
@@ -108,6 +109,17 @@ class OrderDetailView(
     def create_yookassa_payment(self, order, total_price):
         idempotence_key = uuid.uuid4()
 
+        if settings.DEBUG:
+            return_url = f"{settings.NGROK_URL}{reverse_lazy('payment_success')}"
+            if not return_url:
+                raise ValueError(
+                    "При локальной разработке следует запустить ngrok"
+                )
+        else:
+            return_url = self.request.build_absolute_uri(
+                reverse_lazy('payment_success')
+            )
+
         payment = Payment.create({
             "amount": {
                 "value": f"{total_price:.2f}",
@@ -115,10 +127,7 @@ class OrderDetailView(
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url":
-                    self.request.build_absolute_uri(reverse_lazy('payment_success'))
-                    # "https://gwent-website.onrender.com/"
-                    # TODO: Освоить инструмент тестирования реверси на локальную машину  # noqa
+                "return_url": return_url
             },
             "capture": True,
             "description": f"Оплата заказа №{order.id}"

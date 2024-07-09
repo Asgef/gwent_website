@@ -37,3 +37,6 @@ staticfiles:
 
 load_user:
 	python manage.py loaddata admin_users.json
+
+ngrok:
+	poetry run python run_ngrok.py
