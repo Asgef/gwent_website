@@ -13,6 +13,13 @@ class User(models.Model):
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):  # noqa: D105
+        return f'{self.last_name} {self.first_name} {self.email}'
+
+    class Meta:  # noqa: D106
+        verbose_name = "Покупатель"
+        verbose_name_plural = 'Покупатели'
+
 
 class Address(models.Model):
     region = models.CharField(
@@ -45,22 +52,31 @@ class Address(models.Model):
             f'{self.house}, {self.apt}, {self.postal_code}'
         )
 
+    class Meta:  # noqa: D106
+        verbose_name = "Адрес"
+        verbose_name_plural = 'Адреса'
+
 
 class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name='Покупатели'
+    )
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Всего"
     )
     address = models.ForeignKey(
-        Address, on_delete=models.CASCADE, null=True, blank=True
+        Address, on_delete=models.CASCADE, null=True, blank=True,
+        verbose_name="Адрес заказа"
     )
     user_comment = models.CharField(
         max_length=225, null=True, blank=True,
         verbose_name="Комментарий к заказу"
     )
-    paid = models.BooleanField(default=False)
-    sent = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    paid = models.BooleanField(default=False, verbose_name="Статус оплаты")
+    sent = models.BooleanField(default=False, verbose_name="Статус отправки")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата оформления заказа"
+    )
 
     def update_total_price(self):
         self.total_price = sum(
@@ -70,6 +86,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order {self.id} - {self.customer}'
+
+    class Meta:  # noqa: D106
+        verbose_name = "Заказ"
+        verbose_name_plural = 'Заказы'
 
 
 class OrderItem(models.Model):

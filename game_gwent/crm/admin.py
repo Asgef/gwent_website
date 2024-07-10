@@ -50,7 +50,7 @@ class OrderAdmin(admin.ModelAdmin):
             f"{obj.address.street}, {obj.address.city},"
             f"{obj.address.region}, {obj.address.postal_code}"
         )
-    address_display.short_description = 'Address'
+    address_display.short_description = 'Адрес'
 
 
 admin.site.register(User)
