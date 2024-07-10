@@ -16,9 +16,7 @@ Configuration.account_id = settings.YOOKASSA_SHOP_ID
 Configuration.secret_key = settings.YOOKASSA_SECRET_KEY
 
 
-class OrderDetailView(
-    ExtraContextMixin, CartDetailMixin, FormView
-):
+class OrderDetailView(ExtraContextMixin, CartDetailMixin, FormView):
     template_name = 'crm/order.html'
     form_class = OrderForm
     extra_context = {
@@ -39,10 +37,11 @@ class OrderDetailView(
     def form_valid(self, form):
         user_form = UserForm(self.request.POST)
         address_form = AddressForm(self.request.POST)
+        action = self.request.POST.get('action')
+        free_shipping = self.request.POST.get('free_shipping', 'on') == 'on'
 
-        if user_form.is_valid() and address_form.is_valid():
+        if user_form.is_valid():
             user_data = user_form.cleaned_data
-            address_data = address_form.cleaned_data
 
             # Создаём или пере используем пользователя и адрес
             user, created_user = User.objects.get_or_create(
@@ -53,14 +52,34 @@ class OrderDetailView(
                 email=user_data['email'],
             )
 
-            address, created_address = Address.objects.get_or_create(
-                region=address_data['region'],
-                city=address_data['city'],
-                street=address_data['street'],
-                house=address_data['house'],
-                apt=address_data['apt'],
-                postal_code=address_data['postal_code'],
-            )
+            if action == 'checkout':  # ручная обработка заказа
+                address, created_address = Address.objects.get_or_create(
+                    is_manual=True,
+                    defaults={
+                        'region': '', 'city': '', 'street': '',
+                        'house': '', 'apt': '', 'postal_code': ''
+                    }
+                )
+            else:  # обработка заказа с адресом
+                if address_form.is_valid():
+                    address_data = address_form.cleaned_data
+                    address, created_address = Address.objects.get_or_create(
+                        region=address_data['region'],
+                        city=address_data['city'],
+                        street=address_data['street'],
+                        defaults={
+                            'house': address_data['house'],
+                            'apt': address_data['apt'],
+                            'postal_code': address_data['postal_code'],
+                            'is_manual': False
+                        }
+                    )
+                else:
+                    return self.render_to_response(
+                        self.get_context_data(
+                            form=form, user_form=user_form, address_form=address_form
+                        )
+                    )
 
             # Сохраняем заказ без записи в БД
             order = form.save(commit=False)
@@ -86,10 +105,12 @@ class OrderDetailView(
             # Очищаем корзину
             self.request.session['cart'] = {}
 
-            # Создаём платёж через Yookassa
-            payment = self.create_yookassa_payment(order, total)
-
-            return redirect(payment)
+            if action == 'checkout':
+                return redirect('order_processed')
+            else:
+                # Создаём платёж через Yookassa
+                payment = self.create_yookassa_payment(order, total)
+                return redirect(payment)
 
         # Если форма не валидна, возвращаем данные формы
         # TODO: Реализовать флеш сообщения
@@ -106,7 +127,7 @@ class OrderDetailView(
         else:
             return self.form_invalid(form)
 
-    def create_yookassa_payment(self, order, total_price):
+    def create_yookassa_payment(self, order, total_price):  # noqa: D102
         idempotence_key = uuid.uuid4()
 
         if not settings.PRODUCTION:
@@ -138,6 +159,13 @@ class OrderDetailView(
         }, idempotence_key)
 
         return payment.confirmation.confirmation_url
+
+
+class OrderProcessedView(ExtraContextMixin, TemplateView):
+    template_name = 'crm/order_processed.html'
+    extra_context = {
+        'title': 'Спасибо, мы с вами свяжемся',
+    }
 
 
 class SuccessPageView(ExtraContextMixin, TemplateView):

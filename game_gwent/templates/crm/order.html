@@ -7,14 +7,21 @@
 {% block content %}
     <div class="container">
         <h1>Оформление заказа</h1>
-        <form method="post">
+        <form method="post" id="order_form">
             {% csrf_token %}
-                <div>
-                    <h2>Данные пользователя</h2>
-                    {% bootstrap_form user_form %}
-                </div>
-            <h2>Адрес</h2>
-            {% bootstrap_form address_form %}
+            <input type="hidden" name="action" id="form_action" value="buy">
+            <div>
+                <h2>Данные пользователя</h2>
+                {% bootstrap_form user_form %}
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="free_shipping" name="free_shipping" checked>
+                <label class="form-check-label" for="free_shipping">Бесплатная доставка почтой. Если вы хотите изменить способ доставки, то мы свяжемся с вами.</label>
+            </div>
+            <div id="address_fields">
+                <h2>Адрес</h2>
+                {% bootstrap_form address_form %}
+            </div>
             <h2>Ваша корзина</h2>
             <div class="table-responsive">
                 <table class="table align-middle">
@@ -47,19 +54,24 @@
                     </tbody>
                 </table>
             </div>
-            <h2>Комментарий к заказу</h2>
-            {% bootstrap_form order_form %}
+            <div id="comment_section">
+                <h2>Комментарий к заказу</h2>
+                {% bootstrap_form order_form %}
+            </div>
             <h3>Всего: {{ total|floatformat:"-2" }} ₽</h3>
-            <button type="submit" class="btn btn-primary">Купить</button>
+            <button type="submit" id="buy_button" class="btn btn-primary">Купить</button>
+            <button type="button" class="btn btn-primary" id="checkout_button" style="display: none;">Оформить заказ</button>
         </form>
     </div>
-<!-- Подключение jQuery и DaData Suggestions -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/css/suggestions.min.css">
+    <!-- Подключение jQuery и DaData Suggestions -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/js/jquery.suggestions.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suggestions-jquery@21.7.0/dist/css/suggestions.min.css">
 
-<!-- Вставка API ключа в скрытый элемент -->
-<meta name="dadata-api-key" content="{{ DADATA_API_KEY }}">
-
-<script src="{% static 'game_gwent/crm/js/dadata_autocomplete.js' %}"></script>
+    <!-- Вставка API ключа в скрытый элемент -->
+    {% if address_form %}
+    <meta name="dadata-api-key" content="{{ DADATA_API_KEY }}">
+    <script src="{% static 'game_gwent/crm/js/dadata_autocomplete.js' %}"></script>
+    {% endif %}
+    <script src="{% static 'game_gwent/crm/js/delivery_check.js' %}"></script>
 {% endblock %}

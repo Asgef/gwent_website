@@ -34,6 +34,7 @@ class Address(models.Model):
     postal_code = models.CharField(
         max_length=20, null=True, blank=True, verbose_name="Почтовый индекс"
     )
+    is_manual = models.BooleanField(default=False)
 
     def clean(self):
         validate_and_clean_address(self)
