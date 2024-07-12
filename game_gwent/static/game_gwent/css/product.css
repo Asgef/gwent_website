@@ -1,3 +1,18 @@
+@font-face {
+    font-family: jost-regular;
+    src: url('../../fonts/Jost-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: jost-light;
+    src: url('../../fonts/Jost-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+
 .container {
   max-width: 960px;
 }
@@ -81,6 +96,7 @@
 }
 
 body {
+  font-family: jost-regular, jost-light, sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;

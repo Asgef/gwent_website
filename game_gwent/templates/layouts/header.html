@@ -17,10 +17,10 @@
               <img src="{% static 'game_gwent/icons/tisha_logo.svg' %}" width="84" height="84" alt="Aperture">
             </a>
           </li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'home_page' %}">Главная</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'about_page' %}">О нас</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Контакты</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin/">Админка</a></li>
+<!--          <li class="nav-item"><a class="nav-link" href="{% url 'home_page' %}">Главная</a></li>-->
+          <li class="nav-item"><a class="nav-link" href="{% url 'about_page' %}">Приветствую тебя Авантюрист!</a></li>
+<!--          <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Контакты</a></li>-->
+<!--          <li class="nav-item"><a class="nav-link" href="/admin/">Админка</a></li>-->
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cart_detail' %}">
               {% if cart_status == 'filled' %}
