@@ -23,7 +23,7 @@ class User(models.Model):
 
 class Address(models.Model):
     region = models.CharField(
-        max_length=100, verbose_name="Область"
+        max_length=100, null=True, blank=True, verbose_name="Область"
     )
     city = models.CharField(
         max_length=100, null=True, blank=True,

@@ -1,4 +1,12 @@
+import uuid
+
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from yookassa import Payment
+
 from game_gwent.catalog.models import Product
+from game_gwent.crm.forms import UserForm, AddressForm
 
 
 class ExtraContextMixin:  # noqa: D101
@@ -34,7 +42,7 @@ class CartStatusMixin:  # noqa: D101
         return context
 
 
-class CartDetailMixin:  # noqa: D101
+class CartItemMixin:
     def get_cart_items(self):  # noqa: D102
         cart = self.request.session.get('cart', {})
         cart_items = []
@@ -51,9 +59,66 @@ class CartDetailMixin:  # noqa: D101
             })
         return cart_items, total
 
+
+class CartDetailMixin(CartItemMixin):  # noqa: D101
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_items, total = self.get_cart_items()
         context['cart_items'] = cart_items
         context['total'] = total
         return context
+
+
+class BuyNowDetailMixin:  # noqa: D101
+    def get_buy_now_items(self):  # noqa: D102
+        product_data = self.request.session['buy_now']
+        product = get_object_or_404(Product, id=product_data['product_id'])
+        buy_now_items = [{
+            'product': product,
+            'quantity': product_data['quantity'],
+            'total_price': product.price * int(product_data['quantity'])
+        }]
+        total = buy_now_items[0]['total_price']
+
+        return buy_now_items, total
+
+# class OrderDetailMixin(CartDetailMixin, BuyNowDetailMixin):  # noqa: D101
+#     def get_items(self):
+#         if 'buy_now' in self.request.session:
+#             return self.get_buy_now_items()
+#         return self.get_cart_items()
+
+
+class PaymentOrderMixin:
+    def create_yookassa_payment(self, order, total_price):
+        idempotence_key = uuid.uuid4()
+
+        if not settings.PRODUCTION:
+            ngrok_url = settings.NGROK_URL
+            if not ngrok_url:
+                raise ValueError(
+                    "При локальной разработке следует запустить ngrok"
+                )
+            return_url = f"{ngrok_url}{reverse_lazy('payment_success')}"
+        else:
+            return_url = self.request.build_absolute_uri(
+                reverse_lazy('payment_success')
+            )
+
+        payment = Payment.create({
+            "amount": {
+                "value": f"{total_price:.2f}",
+                "currency": "RUB"
+            },
+            "confirmation": {
+                "type": "redirect",
+                "return_url": return_url
+            },
+            "capture": True,
+            "description": f"Оплата заказа №{order.id}",
+            "metadata": {
+                "order_id": str(order.id)
+            }
+        }, idempotence_key)
+
+        return payment.confirmation.confirmation_url

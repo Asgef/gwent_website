@@ -1,12 +1,14 @@
 from django.urls import path
-from .views import OrderDetailView, SuccessPageView, OrderProcessedView
+from .views import (
+    CartOrderlView, SuccessPageView, OrderProcessedView, BuyNowOrderView
+)
 from .webhooks import yookassa_webhook
 
 
 urlpatterns = [
 
     path(
-        '', OrderDetailView.as_view(),
+        '', CartOrderlView.as_view(),
         name='add_order'
     ),
     path(
@@ -21,5 +23,6 @@ urlpatterns = [
         'order/processed/', OrderProcessedView.as_view(),
         name='order_processed'
     ),
+    path('buy_now/<int:pk>/', BuyNowOrderView.as_view(), name='buy_now'),
 
 ]

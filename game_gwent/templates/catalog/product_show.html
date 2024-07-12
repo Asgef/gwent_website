@@ -57,19 +57,34 @@
       <p class="text-muted">Издатель: {{ product.publisher }}</p>
       <p class="text-muted">Рекомендуемый возраст: {{ product.age }}+</p>
 
-      <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-4">
-        {% csrf_token %}
-        <div class="mb-3">
-          <label for="quantity" class="form-label">Количество</label>
-          <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control w-auto">
-        </div>
-        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+<!--      <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-4">-->
+<!--        {% csrf_token %}-->
+<!--        <div class="mb-3">-->
+<!--          <label for="quantity" class="form-label">Количество</label>-->
+<!--          <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control w-auto">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Добавить в корзину</button>-->
+<!--      </form>-->
+
+
+
+      <form id="product-form" method="POST" class="mt-4">
+          {% csrf_token %}
+          <div class="mb-3">
+              <label for="quantity" class="form-label">Количество</label>
+              <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control w-auto">
+          </div>
+          <button type="button" class="btn btn-primary" onclick="submitForm('{% url 'add_to_cart' product.id %}')">Добавить в корзину</button>
+          <button type="button" class="btn btn-success" onclick="submitForm('{% url 'buy_now' product.id %}')">Купить</button>
       </form>
-      <form action="#" method="POST" class="mt-4">
-        {% csrf_token %}
-        <input type="hidden" name="quantity" id="quantity" value="1">
-        <button type="submit" class="btn btn-success ml-2">Купить</button>
-      </form>
+
+      <script>
+          function submitForm(actionUrl) {
+              var form = document.getElementById('product-form');
+              form.action = actionUrl;
+              form.submit();
+          }
+      </script>
     </div>
   </div>
 </div>
