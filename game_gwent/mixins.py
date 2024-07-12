@@ -1,12 +1,9 @@
 import uuid
-
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from yookassa import Payment
-
 from game_gwent.catalog.models import Product
-from game_gwent.crm.forms import UserForm, AddressForm
 
 
 class ExtraContextMixin:  # noqa: D101

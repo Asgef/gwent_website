@@ -1,5 +1,4 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import FormView, TemplateView
 
 from game_gwent.mixins import (
@@ -42,7 +41,6 @@ class CartOrderlView(
         user_form = UserForm(self.request.POST)
         address_form = AddressForm(self.request.POST)
         action = self.request.POST.get('action')
-        free_shipping = self.request.POST.get('free_shipping', 'on') == 'on'
 
         if user_form.is_valid():
             user_data = user_form.cleaned_data
@@ -93,7 +91,6 @@ class CartOrderlView(
 
             # Получаем элементы заказа и общую сумму
             cart_items, total = self.get_cart_items()
-            print(f'Получаем элементы заказа и общую сумму {cart_items}, {total}')
 
             # Устанавливаем total_price перед сохранением заказа
             order.total_price = total
@@ -134,7 +131,10 @@ class CartOrderlView(
             return self.form_invalid(form)
 
 
-class BuyNowOrderView(ExtraContextMixin, CartStatusMixin, BuyNowDetailMixin, PaymentOrderMixin, FormView):
+class BuyNowOrderView(
+    ExtraContextMixin, CartStatusMixin, BuyNowDetailMixin,
+    PaymentOrderMixin, FormView
+):
     template_name = 'crm/order.html'
     form_class = OrderForm
     extra_context = {
@@ -166,7 +166,6 @@ class BuyNowOrderView(ExtraContextMixin, CartStatusMixin, BuyNowDetailMixin, Pay
             context['buy_now_items'] = buy_now_items
             context['total'] = total
         else:
-            # Handle case when 'buy_now' is not in session
             context['buy_now_items'] = []
             context['total'] = 0
 
@@ -185,7 +184,6 @@ class BuyNowOrderView(ExtraContextMixin, CartStatusMixin, BuyNowDetailMixin, Pay
         user_form = UserForm(self.request.POST)
         address_form = AddressForm(self.request.POST)
         action = self.request.POST.get('action')
-        free_shipping = self.request.POST.get('free_shipping', 'on') == 'on'
 
         if user_form.is_valid():
             user_data = user_form.cleaned_data
@@ -288,7 +286,9 @@ class SuccessPageView(ExtraContextMixin, TemplateView):
     }
 
 
-class BuyOrderlView(ExtraContextMixin, PaymentOrderMixin, BuyNowDetailMixin, FormView):
+class BuyOrderlView(
+    ExtraContextMixin, PaymentOrderMixin, BuyNowDetailMixin, FormView
+):
     template_name = 'crm/order.html'
     form_class = OrderForm
     extra_context = {

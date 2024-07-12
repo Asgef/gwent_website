@@ -1,6 +1,8 @@
 from django import forms
 from .models import User, Address, Order, OrderItem
-from phonenumber_field.formfields import PhoneNumberField as FormPhoneNumberField
+from phonenumber_field.formfields import (
+    PhoneNumberField as FormPhoneNumberField
+)
 
 
 class OrderForm(forms.ModelForm):
