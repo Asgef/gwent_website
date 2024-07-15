@@ -24,12 +24,16 @@ def yookassa_webhook(request):  # noqa C901
 
         if notification_object.event == WebhookNotificationEventType.PAYMENT_SUCCEEDED:  # noqa: E501
             order_id = response_object.metadata.get('order_id')
-            print(f'ORDER_ID = {order_id}')
             if order_id:
                 try:
                     order = Order.objects.get(id=order_id)
                     order.paid = True
                     order.save()
+
+                    # Уменьшаем количество товара на складе
+                    for item in order.items.all():
+                        item.product.stock -= item.quantity
+                        item.product.save()
                 except Order.DoesNotExist:
                     return HttpResponse(status=404)
 
