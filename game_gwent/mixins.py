@@ -47,7 +47,10 @@ class CartItemMixin:
 
         products = Product.objects.filter(id__in=cart.keys())
         for product in products:
+            max_quantity = product.stock
             quantity = cart[str(product.id)]
+            if quantity > max_quantity:
+                quantity = max_quantity
             total += product.price * quantity
             cart_items.append({
                 'product': product,
@@ -78,12 +81,6 @@ class BuyNowDetailMixin:  # noqa: D101
         total = buy_now_items[0]['total_price']
 
         return buy_now_items, total
-
-# class OrderDetailMixin(CartDetailMixin, BuyNowDetailMixin):  # noqa: D101
-#     def get_items(self):
-#         if 'buy_now' in self.request.session:
-#             return self.get_buy_now_items()
-#         return self.get_cart_items()
 
 
 class PaymentOrderMixin:
