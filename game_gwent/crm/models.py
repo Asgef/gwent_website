@@ -84,6 +84,18 @@ class Order(models.Model):
             for item in self.items.all()
         )
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            previous = Order.objects.get(pk=self.pk)
+            if not previous.paid and self.paid:
+                self.decrease_stock()
+        super().save(*args, **kwargs)
+
+    def decrease_stock(self):
+        for item in self.items.all():
+            item.product.stock -= item.quantity
+            item.product.save()
+
     def __str__(self):
         return f'Order {self.id} - {self.customer}'
 
