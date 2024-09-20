@@ -23,10 +23,15 @@ jobs:
           sudo apt update
           sudo apt install ansible
 
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 188.120.247.71 >> ~/.ssh/known_hosts
+
       - name: Run Ansible Playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
         run: |
           ansible-playbook -i hosts.ini deploy.yml
-        with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
