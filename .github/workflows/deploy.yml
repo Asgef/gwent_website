@@ -28,10 +28,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan 188.120.247.71 >> ~/.ssh/known_hosts
+          ssh-keyscan yourserver.com >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
         run: |
-          ansible-playbook -i hosts.ini deploy.yml
+          ansible-playbook -i hosts make_deploy.yml
