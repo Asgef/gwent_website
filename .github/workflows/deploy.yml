@@ -34,4 +34,4 @@ jobs:
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
         run: |
-          ansible-playbook -i hosts make_deploy.yml
+          ansible-playbook -i hosts.ini make_deploy.yml
