@@ -1,0 +1,2 @@
+[webservers]
+vds ansible_host=188.120.247.71 ansible_user=asgef ansible_port=22

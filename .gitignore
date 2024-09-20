@@ -8,6 +8,7 @@ coverage.xml
 .pytest_cache/
 .idea/
 .env
+.env_prod
 *.log
 
 *.ipynb
@@ -15,3 +16,4 @@ db.sqlite3
 /staticfiles/
 /media/
 gwent-adminsdk.json
+admin_users.json

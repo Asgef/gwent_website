@@ -1,0 +1,27 @@
+- hosts: vds
+  gather_facts: No
+  vars:
+    user: {{ ansible_user}}
+    project_name: gwent_website
+
+  tasks:
+    - name: Ensure the latest code is pulled from GitHub
+      git:
+        repo: git@github.com:Asgef/{{ project_name}}.git
+        dest: /home/{{ use }}/{{ project_name}}
+        version: main
+
+    - name: Install project
+      ansible.builtin.shell: make install
+      args:
+        chdir: /home/{{ user }}/{{ project_name}}
+
+    - name: build project
+      ansible.builtin.shell: make build
+      args:
+        chdir: /home/{{ user }}/{{ project_name}}
+
+    - name: Restart project
+      ansible.builtin.shell: make restart-production
+      args:
+        chdir: /home/{{ user }}/{{ project_name}}
