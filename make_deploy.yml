@@ -1,5 +1,5 @@
 ---
-- hosts: vds
+- hosts: webservers
   gather_facts: no
   vars:
     user: "{{ ansible_user }}"
