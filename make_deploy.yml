@@ -16,12 +16,16 @@
         update: yes
 
     - name: Install project
-      ansible.builtin.shell: make install
+      ansible.builtin.shell: |
+        . $HOME/.asdf/asdf.sh
+        make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
-      ansible.builtin.shell: make build
+      ansible.builtin.shell: |
+        . $HOME/.asdf/asdf.sh
+        make build
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
