@@ -8,7 +8,7 @@
   tasks:
     - name: Ensure the latest code is pulled from GitHub
       git:
-        repo: "git@github.com:Asgef/{{ project_name }}.git"
+        repo: "https://github.com/Asgef/{{ project_name }}.git"
         dest: "/home/{{ user }}/{{ project_name }}"
         version: main
 
