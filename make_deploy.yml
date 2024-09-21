@@ -50,6 +50,10 @@
       ansible.builtin.shell: "pgrep -f 'gunicorn'"
       register: gunicorn_status
       ignore_errors: true
+    
+    - name: Debug Gunicorn status
+      ansible.builtin.debug:
+        var: gunicorn_status.rc
 
     - name: Start the project if Gunicorn is not running
       ansible.builtin.shell: |
