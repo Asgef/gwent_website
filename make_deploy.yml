@@ -46,7 +46,20 @@
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
-    - name: Restart project
+    - name: Check if Gunicorn is running
+      ansible.builtin.shell: pgrep -f 'gunicorn: master'
+      register: gunicorn_status
+      ignore_errors: true
+
+    - name: Start the project if Gunicorn is not running
+      ansible.builtin.shell: make start-production
+      args:
+        chdir: "/home/{{ user }}/{{ project_name }}"
+      when: gunicorn_status.rc != 0
+
+    - name: Restart the project if Gunicorn is running
       ansible.builtin.shell: make restart-production
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
+      when: gunicorn_status.rc == 0
+
