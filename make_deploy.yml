@@ -8,23 +8,24 @@
   tasks:
     - name: Ensure the latest code is pulled from GitHub
       git:
-      # 
+      # Для публичных репозиториев можно использовать http
+      # что бы на добовлять ssh ключи на сервер
         repo: "https://github.com/Asgef/{{ project_name }}.git"
         dest: "/home/{{ user }}/{{ project_name }}"
         version: main
         update: yes
 
     - name: Install project
-      ansible.builtin.shell: bash -lc "make install"
+      ansible.builtin.shell: make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
-      ansible.builtin.shell: bash -lc "make build"
+      ansible.builtin.shell: make build
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Restart project
-      ansible.builtin.shell: bash -lc "make restart-production"
+      ansible.builtin.shell: make restart-production
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
