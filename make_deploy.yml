@@ -47,7 +47,7 @@
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Check if Gunicorn is running
-      ansible.builtin.shell: "pgrep -f 'gunicorn: master'"
+      ansible.builtin.shell: "pgrep -f 'gunicorn'"
       register: gunicorn_status
       ignore_errors: true
 
