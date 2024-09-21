@@ -4,6 +4,14 @@
   vars:
     user: "{{ ansible_user }}"
     project_name: gwent_website
+    dadata_api_key: "{{ lookup('env', 'DADATA_API_KEY') }}"
+    debug: "{{ lookup('env', 'DEBUG') }}"
+    production: "{{ lookup('env', 'PRODUCTION') }}"
+    external_media_storage: "{{ lookup('env', 'EXTERNAL_MEDIA_STORAGE') }}"
+    secret_key: "{{ lookup('env', 'SECRET_KEY') }}"
+    yookassa_secret_key: "{{ lookup('env', 'YOOKASSA_SECRET_KEY') }}"
+    yookassa_shop_id: "{{ lookup('env', 'YOOKASSA_SHOP_ID') }}"
+    database_url: "{{ lookup('env', 'DATABASE_URL') }}"
 
   tasks:
     - name: Ensure the latest code is pulled from GitHub
@@ -14,6 +22,11 @@
         dest: "/home/{{ user }}/{{ project_name }}"
         version: main
         update: yes
+      
+    - name: Add .env file
+      ansible.builtin.template:
+        src: "ansible/templates/.env.j2"
+        dest: "/home/{{ user }}/{{ project_name }}/.env"
 
     - name: Install project
       ansible.builtin.shell: |

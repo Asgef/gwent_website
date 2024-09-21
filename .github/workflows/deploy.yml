@@ -29,5 +29,15 @@ jobs:
           sudo apt install ansible -y
 
       - name: Run Ansible Playbook
+        env:
+          DADATA_API_KEY: ${{ secrets.DADATA_API_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
+          PRODUCTION: ${{ secrets.PRODUCTION }}
+          EXTERNAL_MEDIA_STORAGE: ${{ secrets.EXTERNAL_MEDIA_STORAGE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+          YOOKASSA_SECRET_KEY: ${{ secrets.YOOKASSA_SECRET_KEY }}
+          YOOKASSA_SHOP_ID: ${{ secrets.YOOKASSA_SHOP_ID }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           ansible-playbook -i hosts.ini make_deploy.yml
