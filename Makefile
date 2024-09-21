@@ -5,7 +5,7 @@ install:
 	poetry install
 
 start-production:
-	poetry run gunicorn -w 5 -b 0.0.0.0:8000 game_gwent.wsgi
+	poetry run gunicorn --daemon -w 5 -b 0.0.0.0:8000 game_gwent.wsgi
 
 restart-production:
 	pkill -f 'gunicorn' || true
