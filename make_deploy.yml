@@ -46,16 +46,12 @@
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
-    - name: Check if Gunicorn is running
-      ansible.builtin.shell: "pgrep -f 'gunicorn'"
-      register: gunicorn_status
+    - name: Stop any running Gunicorn processes
+      ansible.builtin.shell: |
+        pkill -f 'gunicorn' || true
       ignore_errors: true
-    
-    - name: Debug Gunicorn status
-      ansible.builtin.debug:
-        var: gunicorn_status.rc
 
-    - name: Start the project if Gunicorn is not running
+    - name: Start the project
       ansible.builtin.shell: |
         export ASDF_DIR=$HOME/.asdf
         . $HOME/.asdf/asdf.sh
@@ -64,14 +60,4 @@
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
       when: gunicorn_status.rc != 0
-
-    - name: Restart the project if Gunicorn is running
-      ansible.builtin.shell: |
-        export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
-        make restart-production
-      args:
-        chdir: "/home/{{ user }}/{{ project_name }}"
-      when: gunicorn_status.rc == 0
 
