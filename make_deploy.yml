@@ -15,16 +15,16 @@
         update: yes
 
     - name: Install project
-      ansible.builtin.shell: make install
+      ansible.builtin.shell: bash -lc "make install"
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
-      ansible.builtin.shell: make build
+      ansible.builtin.shell: bash -lc "make build"
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Restart project
-      ansible.builtin.shell: make restart-production
+      ansible.builtin.shell: bash -lc "make restart-production"
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
