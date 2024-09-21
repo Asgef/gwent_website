@@ -8,9 +8,11 @@
   tasks:
     - name: Ensure the latest code is pulled from GitHub
       git:
+      # 
         repo: "https://github.com/Asgef/{{ project_name }}.git"
         dest: "/home/{{ user }}/{{ project_name }}"
         version: main
+        update: yes
 
     - name: Install project
       ansible.builtin.shell: make install
