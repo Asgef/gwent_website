@@ -25,7 +25,7 @@
       
     - name: Add .env file
       ansible.builtin.template:
-        src: "ansible/templates/.env.j2"
+        src: ".env.j2"
         dest: "/home/{{ user }}/{{ project_name }}/.env"
 
     - name: Install project
