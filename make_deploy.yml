@@ -52,13 +52,21 @@
       ignore_errors: true
 
     - name: Start the project if Gunicorn is not running
-      ansible.builtin.shell: make start-production
+      ansible.builtin.shell: |
+        export ASDF_DIR=$HOME/.asdf
+        . $HOME/.asdf/asdf.sh
+        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+        make start-production
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
       when: gunicorn_status.rc != 0
 
     - name: Restart the project if Gunicorn is running
-      ansible.builtin.shell: make restart-production
+      ansible.builtin.shell: |
+        export ASDF_DIR=$HOME/.asdf
+        . $HOME/.asdf/asdf.sh
+        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+        make restart-production
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
       when: gunicorn_status.rc == 0
