@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'game_gwent',
     'game_gwent.catalog',
     'game_gwent.cart',
-    'game_gwent.crm'
+    'game_gwent.crm',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'game_gwent.urls'
@@ -168,3 +170,8 @@ YOOKASSA_SHOP_ID = os.getenv('YOOKASSA_SHOP_ID')
 
 NGROK_AUTHTOKEN = os.getenv('NGROK_AUTHTOKEN')
 NGROK_URL = os.getenv('NGROK_URL', 'http://127.0.0.1:8000')
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '188.120.247.71',
+]

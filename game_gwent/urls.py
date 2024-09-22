@@ -18,6 +18,7 @@ from django.urls import include, path
 from .views import HomeListView, AboutPageView, ContactPageView
 from django.conf import settings
 from django.conf.urls.static import static
+import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
@@ -28,3 +29,8 @@ urlpatterns = [
     path('cart/', include('game_gwent.cart.urls')),
     path('checkouts/', include('game_gwent.crm.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

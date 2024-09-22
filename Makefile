@@ -9,7 +9,7 @@ start-production:
 
 restart-production:
 	pkill -f 'gunicorn' || true
-	poetry run gunicorn -w 5 -b 0.0.0.0:8080 game_gwent.wsgi
+	poetry run gunicorn -w 5 -b 0.0.0.0:8000 game_gwent.wsgi
 
 start:
 	${MANAGE} runserver 0.0.0.0:8000
