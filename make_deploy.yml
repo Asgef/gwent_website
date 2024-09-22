@@ -12,6 +12,8 @@
     yookassa_secret_key: "{{ lookup('env', 'YOOKASSA_SECRET_KEY') }}"
     yookassa_shop_id: "{{ lookup('env', 'YOOKASSA_SHOP_ID') }}"
     database_url: "{{ lookup('env', 'DATABASE_URL') }}"
+    admin_sdk: "{{ lookup('env', 'ADMIN_SDK') }}"
+    url_sdk_storage: "{{ lookup('env', 'URL_SDK_STORAGE') }}"
 
   tasks:
     - name: Ensure the latest code is pulled from GitHub
