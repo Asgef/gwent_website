@@ -14,6 +14,7 @@
     database_url: "{{ lookup('env', 'DATABASE_URL') }}"
     admin_sdk: "{{ lookup('env', 'ADMIN_SDK') }}"
     url_sdk_storage: "{{ lookup('env', 'URL_SDK_STORAGE') }}"
+    ngrok_authtoken: "{{ lookup('env', 'NGROK_AUTHTOKEN') }}"
 
   tasks:
     - name: Ensure the latest code is pulled from GitHub
