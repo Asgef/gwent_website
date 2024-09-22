@@ -31,6 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 PRODUCTION = os.getenv('PRODUCTION', 'False') == 'True'
+EXTERNAL_MEDIA_STORAGE = os.getenv('EXTERNAL_MEDIA_STORAGE', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -133,7 +134,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if PRODUCTION:
+
+if EXTERNAL_MEDIA_STORAGE:
     storage_class = 'game_gwent.storage_backends.FirebaseStorage'
 else:
     storage_class = 'django.core.files.storage.FileSystemStorage'
