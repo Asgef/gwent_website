@@ -41,6 +41,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           ADMIN_SDK: ${{ secrets.ADMIN_SDK }}
           URL_SDK_STORAGE: ${{ secrets.URL_SDK_STORAGE }}
-          NGROK_AUTHTOKEN: ${{ secret.NGROK_AUTHTOKEN }}
+          NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
+
         run: |
           ansible-playbook -i hosts.ini make_deploy.yml
