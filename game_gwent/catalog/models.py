@@ -31,7 +31,7 @@ class Product(models.Model):  # noqa: D101
     age = models.PositiveIntegerField(verbose_name="Рекомендуемый возраст")
 
     main_image = models.ImageField(
-        upload_to='media/game_gwent/catalog/img/', blank=True,
+        upload_to='game_gwent/catalog/img/', blank=True,
         null=True, verbose_name="Обложка"
     )
 
@@ -49,7 +49,7 @@ class ProductImage(models.Model):
         Product, related_name='images', on_delete=models.CASCADE
     )
     image = models.ImageField(
-        upload_to='media/game_gwent/catalog/img/', blank=True,
+        upload_to='game_gwent/catalog/img/', blank=True,
         null=True, verbose_name="Изображения"
     )
 
