@@ -34,7 +34,8 @@
         dest: "/home/{{ user }}/{{ project_name }}/.env"
 
     - name: Show shell
-      ansible.builtin.shell: |
+      ansible.builtin.command: |
+        source /home/{{ user }}/.bashrc
         asdf
         echo $SHELL
       register: asdf_processes
