@@ -35,14 +35,12 @@
 
     - name: Install project
       ansible.builtin.shell: |
-        . ~/.bashrc
         make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
       ansible.builtin.shell: |
-        . ~/.bashrc
         make build
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
