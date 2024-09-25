@@ -34,10 +34,10 @@
         dest: "/home/{{ user }}/{{ project_name }}/.env"
 
     - name: Show shell
-      ansible.builtin.command: |
-        source /home/{{ user }}/.bashrc
-        asdf
-        echo $SHELL
+      ansible.builtin.command:
+        cmd: |
+          . ~/.bashrc
+          asdf
       register: asdf_processes
       ignore_errors: true
 
@@ -46,7 +46,7 @@
         var: asdf_processes
 
     - name: Install project
-      ansible.builtin.command: |
+      ansible.builtin.shell: |
         make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
