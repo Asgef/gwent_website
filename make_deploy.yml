@@ -50,17 +50,18 @@
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Stop any running Gunicorn processes
-      ansible.builtin.shell: |
-        pkill -f 'gunicorn' || true
-      ignore_errors: true
-
-    - name: Start the project
-      ansible.builtin.shell: |
-        export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
-        make start-production
+      ansible.builtin.shell: make stop-production
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
+      ignore_errors: true
+
+#    - name: Start the project
+#      ansible.builtin.shell: |
+#        export ASDF_DIR=$HOME/.asdf
+#        . $HOME/.asdf/asdf.sh
+#        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+#        make start-production
+#      args:
+#        chdir: "/home/{{ user }}/{{ project_name }}"
 
 
