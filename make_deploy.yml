@@ -35,18 +35,14 @@
 
     - name: Install project
       ansible.builtin.shell: |
-        export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+        . ~/.bashrc
         make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
       ansible.builtin.shell: |
-        export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+        . ~/.bashrc
         make build
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
