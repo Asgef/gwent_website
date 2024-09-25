@@ -33,6 +33,15 @@
         src: ".env.j2"
         dest: "/home/{{ user }}/{{ project_name }}/.env"
 
+    - name: Show running Gunicorn processes
+      ansible.builtin.shell: asdf
+      register: asdf_processes
+      ignore_errors: true
+
+    - name: Debug Gunicorn processes
+      ansible.builtin.debug:
+        var: asdf_processes
+
     - name: Install project
       ansible.builtin.shell: |
         make install
