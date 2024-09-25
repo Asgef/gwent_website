@@ -45,7 +45,7 @@
         var: asdf_processes
 
     - name: Install project
-      ansible.builtin.shell: |
+      ansible.builtin.command: |
         make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
