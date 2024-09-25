@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from yookassa import Payment
 from game_gwent.catalog.models import Product
+from django.conf import settings
 
 
 class ExtraContextMixin:  # noqa: D101
     def get_extra_context(self):
         return {
-            'phn_number': '+725762976',
-            'email': 'enter@ent.com',
+            'phn_number': settings.PHONE_NUMBER,
+            'email': settings.EMAIL_ADDRESS,
         }
 
     def get_context_data(self, **kwargs):  # noqa: D102
@@ -23,9 +24,6 @@ class ExtraContextMixin:  # noqa: D101
         extra_context.update(view_extra_context)
         context.update(extra_context)
         return context
-
-
-# TODO: Вынести данные в константы
 
 
 class CartStatusMixin:  # noqa: D101
@@ -91,6 +89,7 @@ class PaymentOrderMixin:
             ngrok_url = settings.NGROK_URL
             if not ngrok_url:
                 raise ValueError(
+                    "If developing locally, you should run ngrok"
                     "При локальной разработке следует запустить ngrok"
                 )
             return_url = f"{ngrok_url}{reverse_lazy('payment_success')}"

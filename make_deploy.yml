@@ -15,12 +15,14 @@
     admin_sdk: "{{ lookup('env', 'ADMIN_SDK') }}"
     url_sdk_storage: "{{ lookup('env', 'URL_SDK_STORAGE') }}"
     ngrok_authtoken: "{{ lookup('env', 'NGROK_AUTHTOKEN') }}"
+    phone_number: "{{ lookup('env', 'PHONE_NUMBER') }}"
+    email_address: "{{ lookup('env', 'EMAIL_ADDRESS') }}"
 
   tasks:
     - name: Ensure the latest code is pulled from GitHub
       git:
       # Для публичных репозиториев можно использовать http
-      # что бы на добовлять ssh ключи на сервер
+      # что бы не добавлять ssh ключи на сервер
         repo: "https://github.com/Asgef/{{ project_name }}.git"
         dest: "/home/{{ user }}/{{ project_name }}"
         version: main

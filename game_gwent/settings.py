@@ -175,3 +175,8 @@ INTERNAL_IPS = [
     '127.0.0.1',
     '188.120.247.71',
 ]
+
+# Footer data
+
+PHONE_NUMBER = os.getenv('PHONE_NUMBER')
+EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')
