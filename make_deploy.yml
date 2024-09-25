@@ -36,7 +36,6 @@
     - name: Show shell
       ansible.builtin.command:
         cmd: |
-          . ~/.bashrc
           asdf
       register: asdf_processes
       ignore_errors: true
