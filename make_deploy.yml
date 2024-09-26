@@ -37,7 +37,6 @@
       ansible.builtin.command:
         cmd: |
           python --version
-          asdf
       register: asdf_processes
       ignore_errors: true
 

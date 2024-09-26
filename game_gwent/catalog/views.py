@@ -4,6 +4,7 @@ from game_gwent.mixins import ExtraContextMixin, CartStatusMixin
 
 
 class CatalogDetailView(ExtraContextMixin, CartStatusMixin, DetailView):
+    
     model = Product
     template_name = 'catalog/product_show.html'
 
