@@ -32,26 +32,33 @@
       ansible.builtin.template:
         src: ".env.j2"
         dest: "/home/{{ user }}/{{ project_name }}/.env"
-
+    
     - name: Show shell
       ansible.builtin.command:
         cmd: |
+          python --version
           asdf
       register: asdf_processes
       ignore_errors: true
 
     - name: Debug Gunicorn processes
       ansible.builtin.debug:
-        var: asdf_processes
+        var: asdf_processes.stdout_lines
 
     - name: Install project
       ansible.builtin.shell: |
+        export ASDF_DIR=$HOME/.asdf
+        . $HOME/.asdf/asdf.sh
+        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
         make install
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
 
     - name: Build project
       ansible.builtin.shell: |
+        export ASDF_DIR=$HOME/.asdf
+        . $HOME/.asdf/asdf.sh
+        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
         make build
       args:
         chdir: "/home/{{ user }}/{{ project_name }}"
