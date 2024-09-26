@@ -45,34 +45,16 @@
         var: asdf_processes
 
     - name: Install project
-      ansible.builtin.shell: |
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
-        make install
-      args:
+      community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
+        target: install
 
     - name: Build project
-      ansible.builtin.shell: |
-        export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
-        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
-        make build
-      args:
+      community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
+        target: build
 
     - name: Stop any running Gunicorn processes
-      ansible.builtin.shell: make stop-production
-      args:
+      community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
-      ignore_errors: true
-
-#    - name: Start the project
-#      ansible.builtin.shell: |
-#        export ASDF_DIR=$HOME/.asdf
-#        . $HOME/.asdf/asdf.sh
-#        export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
-#        make start-production
-#      args:
-#        chdir: "/home/{{ user }}/{{ project_name }}"
-
-
+        target: stop-production
