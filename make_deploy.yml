@@ -40,9 +40,9 @@
       register: asdf_processes
       ignore_errors: true
 
-    - name: Debug Gunicorn processes
+    - name: Show var
       ansible.builtin.debug:
-        var: asdf_processes.stdout_lines
+        var: asdf_processes
 
     - name: Install project
       ansible.builtin.shell: |
