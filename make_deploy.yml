@@ -47,7 +47,6 @@
     - name: Install project
       ansible.builtin.shell: |
         export ASDF_DIR=$HOME/.asdf
-        . $HOME/.asdf/asdf.sh
         export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
         make install
       args:
