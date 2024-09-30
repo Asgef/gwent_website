@@ -8,7 +8,7 @@ start-production:
 	poetry run gunicorn --daemon -w 5 -b 0.0.0.0:8000 game_gwent.wsgi
 
 stop-production:
-	pkill -f 'gunicorn' || true
+	pkill -f 'game_gwent.wsgi:application'
 
 start:
 	${MANAGE} runserver 0.0.0.0:8000
