@@ -33,7 +33,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 PRODUCTION = os.getenv('PRODUCTION', 'False') == 'True'
 EXTERNAL_MEDIA_STORAGE = os.getenv('EXTERNAL_MEDIA_STORAGE', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = list(os.getenv('ALLOWED_HOSTS'))
+
 
 # Application definition
 
