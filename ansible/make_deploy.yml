@@ -17,6 +17,7 @@
     ngrok_authtoken: "{{ lookup('env', 'NGROK_AUTHTOKEN') }}"
     phone_number: "{{ lookup('env', 'PHONE_NUMBER') }}"
     email_address: "{{ lookup('env', 'EMAIL_ADDRESS') }}"
+    allowed_hosts: "{{ lookup('env', 'ALLOWED_HOSTS') }}"
 
   tasks:
     - name: Ensure the latest code is pulled from GitHub
