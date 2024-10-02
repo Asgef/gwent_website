@@ -46,4 +46,5 @@ jobs:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
         run: |
+          cd ansible
           ansible-playbook -i hosts.ini make_deploy.yml
