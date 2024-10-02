@@ -54,7 +54,8 @@
         chdir: "/home/{{ user }}/{{ project_name }}"
         target: build
 
-    - name: Stop any running Gunicorn processes
+    - name: Stop any running Gunicorn services
       community.general.make:
         chdir: "/home/{{ user }}/{{ project_name }}"
         target: stop-production
+      ignore_errors: true
