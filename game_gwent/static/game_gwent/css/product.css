@@ -88,6 +88,13 @@
   }
 }
 
+@media (max-width: 417px) {
+  #product-form .btn.btn-success {
+    margin-top: 10px;
+  }
+}
+
+
 
 .main-banner {
     background-image: url(../img/Hero_banner.png);
